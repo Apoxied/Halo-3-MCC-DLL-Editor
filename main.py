@@ -1790,6 +1790,47 @@ invul_in_multiplayer_button.bind("<Enter>", enter)
 invul_in_multiplayer_button.bind("<Leave>", leave)
 
 
+# flashlight in vehicle function
+def flashlight_in_vehicles():
+    global dll_bytes
+    dll_bytes[0x340257:0x340257 + 1] = [0x8C]
+    dll_bytes[0x3402AF:0x3402AF + 1] = [0x8F]
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+
+
+# undo flashlight in vehicle function
+def undo_flashlight_in_vehicles():
+    if not filepath:
+        return
+
+    # Write Changes to File
+    with open(filepath, 'rb') as f:
+        global dll_bytes
+        dll_bytes = bytearray(f.read())
+    dll_bytes[0x340257:0x340257 + 1] = [0x85]
+    dll_bytes[0x3402AF:0x3402AF + 1] = [0x84]
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+    global text_state
+    text_state = "Removed"
+    flashlight_vehicles_var.set(0)
+
+
+# flashlight in vehicles checkbox
+flashlight_vehicles_var = tk.IntVar()
+flashlight_in_vehicles_button = tk.Checkbutton(root, text='Flashlight in Vehicles (1.3073.0.0 ONLY)', variable=flashlight_vehicles_var,
+                                               command=lambda: (
+                                                   flashlight_in_vehicles() if flashlight_vehicles_var.get() else undo_flashlight_in_vehicles()),
+                                               font=("arcadia", 10, "bold"))
+flashlight_in_vehicles_button.pack()
+flashlight_in_vehicles_button.place(x=10, y=400)
+
+
 # flashlight in multiplayer function
 def flashlight_in_multiplayer():
     global dll_bytes
@@ -1879,47 +1920,6 @@ def leave(event):
 # button binds
 flashlight_in_multiplayer_button.bind("<Enter>", enter)
 flashlight_in_multiplayer_button.bind("<Leave>", leave)
-
-
-# flashlight in vehicle function
-def flashlight_in_vehicles():
-    global dll_bytes
-    dll_bytes[0x340257:0x340257 + 1] = [0x8C]
-    dll_bytes[0x3402AF:0x3402AF + 1] = [0x8F]
-
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
-
-
-# undo flashlight in vehicle function
-def undo_flashlight_in_vehicles():
-    if not filepath:
-        return
-
-    # Write Changes to File
-    with open(filepath, 'rb') as f:
-        global dll_bytes
-        dll_bytes = bytearray(f.read())
-    dll_bytes[0x340257:0x340257 + 1] = [0x85]
-    dll_bytes[0x3402AF:0x3402AF + 1] = [0x84]
-
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
-    global text_state
-    text_state = "Removed"
-    flashlight_vehicles_var.set(0)
-
-
-# flashlight in vehicles checkbox
-flashlight_vehicles_var = tk.IntVar()
-flashlight_in_vehicles_button = tk.Checkbutton(root, text='Flashlight in Vehicles (1.3073.0.0 ONLY)', variable=flashlight_vehicles_var,
-                                               command=lambda: (
-                                                   flashlight_in_vehicles() if flashlight_vehicles_var.get() else undo_flashlight_in_vehicles()),
-                                               font=("arcadia", 10, "bold"))
-flashlight_in_vehicles_button.pack()
-flashlight_in_vehicles_button.place(x=10, y=400)
 
 
 # 3rd person function

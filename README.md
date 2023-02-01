@@ -40,6 +40,7 @@ Install the dependencies:
 pip install psutil
 pip install win32api
 pip install tkinter
+pip install pypiwin32
 ```
 
 ## Development

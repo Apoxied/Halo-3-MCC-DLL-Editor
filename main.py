@@ -4,6 +4,7 @@ import tkinter.messagebox as messagebox
 import os
 import win32api
 import psutil
+from tkinter import Label
 
 # Create the main window
 root = tk.Tk()
@@ -282,6 +283,7 @@ def open_dll():
             if version != "1.3073.0.0":
                 bump_possession_button.config(state="disabled")
                 fix_forge_falling_speed_button.config(state="disabled")
+                flashlight_in_vehicles_button.config(state="disabled")
 
         # Handle exception if invalid file or file not found
         except FileNotFoundError:
@@ -757,6 +759,24 @@ bottomless_button = tk.Checkbutton(root, text='Bottomless Grenades', variable=bo
 bottomless_button.pack()
 bottomless_button.place(x=10, y=70)
 
+# bottomless grenades info tooltip
+tooltip_text = "Never run out of grenades."
+tooltip = Label(root, text=tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    tooltip.place(x=bottomless_button.winfo_x() + bottomless_button.winfo_width(), y=bottomless_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    tooltip.pack_forget()
+    tooltip.place_forget()
+
+# button binds
+bottomless_button.bind("<Enter>", enter)
+bottomless_button.bind("<Leave>", leave)
+
 
 # all grenades at once function
 def all_grenades_at_once():
@@ -898,6 +918,24 @@ all_grenades_at_once_button = tk.Checkbutton(root, text='All Grenades At Once', 
 all_grenades_at_once_button.pack()
 all_grenades_at_once_button.place(x=10, y=100)
 
+# all grenades at once info tooltip
+all_grenades_at_once_tooltip_text = "Max quantity is 4 instead of 2. No initial wait time on regeneration."
+all_grenades_at_once_tooltip = Label(root, text=all_grenades_at_once_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+all_grenades_at_once_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    all_grenades_at_once_tooltip.place(x=all_grenades_at_once_button.winfo_x() + all_grenades_at_once_button.winfo_width(), y=all_grenades_at_once_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    all_grenades_at_once_tooltip.pack_forget()
+    all_grenades_at_once_tooltip.place_forget()
+
+# button binds
+all_grenades_at_once_button.bind("<Enter>", enter)
+all_grenades_at_once_button.bind("<Leave>", leave)
+
 
 # Bottomless Ammo Function
 def bottomless_ammo():
@@ -972,6 +1010,24 @@ bottomless_ammo_button = tk.Checkbutton(root, text='Bottomless Ammo', variable=b
     bottomless_ammo() if bottomless_ammo_var.get() else undo_bottomless_ammo()), font=("arcadia", 10, "bold"))
 bottomless_ammo_button.pack()
 bottomless_ammo_button.place(x=10, y=130)
+
+# bottomless ammo info tooltip
+bottomless_ammo_tooltip_text = "Never run out of ammo."
+bottomless_ammo_tooltip = Label(root, text=bottomless_ammo_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+bottomless_ammo_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    bottomless_ammo_tooltip.place(x=bottomless_ammo_button.winfo_x() + bottomless_ammo_button.winfo_width(), y=bottomless_ammo_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    bottomless_ammo_tooltip.pack_forget()
+    bottomless_ammo_tooltip.place_forget()
+
+# button binds
+bottomless_ammo_button.bind("<Enter>", enter)
+bottomless_ammo_button.bind("<Leave>", leave)
 
 
 # no barriers and no kill triggers function
@@ -1108,6 +1164,24 @@ no_barriers_kill_triggers_button = tk.Checkbutton(root, text='No Barriers & No K
 no_barriers_kill_triggers_button.pack()
 no_barriers_kill_triggers_button.place(x=10, y=160)
 
+# no barriers & no killer triggers info tooltip
+no_barriers_kill_triggers_tooltip_text = "Turn off soft ceiling barriers & kill triggers."
+no_barriers_kill_triggers_tooltip = Label(root, text=no_barriers_kill_triggers_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+no_barriers_kill_triggers_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    no_barriers_kill_triggers_tooltip.place(x=no_barriers_kill_triggers_button.winfo_x() + no_barriers_kill_triggers_button.winfo_width(), y=no_barriers_kill_triggers_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    no_barriers_kill_triggers_tooltip.pack_forget()
+    no_barriers_kill_triggers_tooltip.place_forget()
+
+# button binds
+no_barriers_kill_triggers_button.bind("<Enter>", enter)
+no_barriers_kill_triggers_button.bind("<Leave>", leave)
+
 
 # 30 tick function
 def thirty_tick():
@@ -1179,6 +1253,24 @@ thirty_tick_button = tk.Checkbutton(root, text='30 Tick', variable=thirty_tick_v
                                     font=("arcadia", 10, "bold"))
 thirty_tick_button.pack()
 thirty_tick_button.place(x=10, y=190)
+
+# 30 tick info tooltip
+thirty_tick_tooltip_text = "Force the game to run like OG Halo 3."
+thirty_tick_tooltip = Label(root, text=thirty_tick_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+thirty_tick_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    thirty_tick_tooltip.place(x=thirty_tick_button.winfo_x() + thirty_tick_button.winfo_width(), y=thirty_tick_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    thirty_tick_tooltip.pack_forget()
+    thirty_tick_tooltip.place_forget()
+
+# button binds
+thirty_tick_button.bind("<Enter>", enter)
+thirty_tick_button.bind("<Leave>", leave)
 
 
 # dual wield anything function
@@ -1252,6 +1344,24 @@ dual_wield_anything_button = tk.Checkbutton(root, text='Dual Wield Anything', va
                                             font=("arcadia", 10, "bold"))
 dual_wield_anything_button.pack()
 dual_wield_anything_button.place(x=10, y=220)
+
+# dual wield anything info tooltip
+dual_wield_anything_tooltip_text = "Dual wield any 2 weapons of your choosing."
+dual_wield_anything_tooltip = Label(root, text=dual_wield_anything_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+dual_wield_anything_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    dual_wield_anything_tooltip.place(x=dual_wield_anything_button.winfo_x() + dual_wield_anything_button.winfo_width(), y=dual_wield_anything_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    dual_wield_anything_tooltip.pack_forget()
+    dual_wield_anything_tooltip.place_forget()
+
+# button binds
+dual_wield_anything_button.bind("<Enter>", enter)
+dual_wield_anything_button.bind("<Leave>", leave)
 
 
 # custom colors in multiplayer function
@@ -1384,6 +1494,24 @@ custom_colors_multiplayer_button = tk.Checkbutton(root, text='Custom Colors Alwa
 custom_colors_multiplayer_button.pack()
 custom_colors_multiplayer_button.place(x=10, y=250)
 
+# custom colors in multiplayer info tooltip
+custom_colors_multiplayer_tooltip_text = "Force your custom MP colors in any game mode \n(exlcuding single player mode.)"
+custom_colors_multiplayer_tooltip = Label(root, text=custom_colors_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+custom_colors_multiplayer_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    custom_colors_multiplayer_tooltip.place(x=custom_colors_multiplayer_button.winfo_x() + custom_colors_multiplayer_button.winfo_width(), y=custom_colors_multiplayer_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    custom_colors_multiplayer_tooltip.pack_forget()
+    custom_colors_multiplayer_tooltip.place_forget()
+
+# button binds
+custom_colors_multiplayer_button.bind("<Enter>", enter)
+custom_colors_multiplayer_button.bind("<Leave>", leave)
+
 
 # no weapon overheat function
 def no_weapon_overheat():
@@ -1456,6 +1584,24 @@ no_weapon_overheat_button = tk.Checkbutton(root, text='No Weapon Overheat', vari
                                            font=("arcadia", 10, "bold"))
 no_weapon_overheat_button.pack()
 no_weapon_overheat_button.place(x=10, y=280)
+
+# no weapon overheat info tooltip
+no_weapon_overheat_tooltip_text = "Weapons with cooldown will no longer overheat."
+no_weapon_overheat_tooltip = Label(root, text=no_weapon_overheat_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+no_weapon_overheat_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    no_weapon_overheat_tooltip.place(x=no_weapon_overheat_button.winfo_x() + no_weapon_overheat_button.winfo_width(), y=no_weapon_overheat_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    no_weapon_overheat_tooltip.pack_forget()
+    no_weapon_overheat_tooltip.place_forget()
+
+# button binds
+no_weapon_overheat_button.bind("<Enter>", enter)
+no_weapon_overheat_button.bind("<Leave>", leave)
 
 
 # no weapon checkpoint crashes function
@@ -1534,6 +1680,24 @@ no_checkpoint_crashes_button = tk.Checkbutton(root, text='No Multiplayer Checkpo
 no_checkpoint_crashes_button.pack()
 no_checkpoint_crashes_button.place(x=10, y=310)
 
+# no multiplayer checkpoint crashes info tooltip
+no_checkpoint_crashes_tooltip_text = "Forces the game to revert no \nmatter what you interact with."
+no_checkpoint_crashes_tooltip = Label(root, text=no_checkpoint_crashes_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+no_checkpoint_crashes_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    no_checkpoint_crashes_tooltip.place(x=no_checkpoint_crashes_button.winfo_x() + no_checkpoint_crashes_button.winfo_width(), y=no_checkpoint_crashes_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    no_checkpoint_crashes_tooltip.pack_forget()
+    no_checkpoint_crashes_tooltip.place_forget()
+
+# button binds
+no_checkpoint_crashes_button.bind("<Enter>", enter)
+no_checkpoint_crashes_button.bind("<Leave>", leave)
+
 
 # invulnerability in multiplayer function
 def invulnerability_in_multiplayer():
@@ -1606,6 +1770,24 @@ invul_in_multiplayer_button = tk.Checkbutton(root, text='Invulnerability in Mult
                                              font=("arcadia", 10, "bold"))
 invul_in_multiplayer_button.pack()
 invul_in_multiplayer_button.place(x=10, y=340)
+
+# invulnerability in multiplayer info tooltip
+invul_in_multiplayer_tooltip_text = "Invulnerability in multiplayer (exlcuding single player)."
+invul_in_multiplayer_tooltip = Label(root, text=invul_in_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+invul_in_multiplayer_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    invul_in_multiplayer_tooltip.place(x=invul_in_multiplayer_button.winfo_x() + invul_in_multiplayer_button.winfo_width(), y=invul_in_multiplayer_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    invul_in_multiplayer_tooltip.pack_forget()
+    invul_in_multiplayer_tooltip.place_forget()
+
+# button binds
+invul_in_multiplayer_button.bind("<Enter>", enter)
+invul_in_multiplayer_button.bind("<Leave>", leave)
 
 
 # flashlight in multiplayer function
@@ -1680,6 +1862,24 @@ flashlight_in_multiplayer_button = tk.Checkbutton(root, text='Flashlight in Mult
 flashlight_in_multiplayer_button.pack()
 flashlight_in_multiplayer_button.place(x=10, y=370)
 
+# flashlight in multiplayer info tooltip
+flashlight_in_multiplayer_tooltip_text = "Toggle the flashlight in multiplayer \n(up on d-pad/4 on keyboard)."
+flashlight_in_multiplayer_tooltip = Label(root, text=flashlight_in_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+flashlight_in_multiplayer_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    flashlight_in_multiplayer_tooltip.place(x=flashlight_in_multiplayer_button.winfo_x() + flashlight_in_multiplayer_button.winfo_width(), y=flashlight_in_multiplayer_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    flashlight_in_multiplayer_tooltip.pack_forget()
+    flashlight_in_multiplayer_tooltip.place_forget()
+
+# button binds
+flashlight_in_multiplayer_button.bind("<Enter>", enter)
+flashlight_in_multiplayer_button.bind("<Leave>", leave)
+
 
 # flashlight in vehicle function
 def flashlight_in_vehicles():
@@ -1714,7 +1914,7 @@ def undo_flashlight_in_vehicles():
 
 # flashlight in vehicles checkbox
 flashlight_vehicles_var = tk.IntVar()
-flashlight_in_vehicles_button = tk.Checkbutton(root, text='Flashlight in Vehicles', variable=flashlight_vehicles_var,
+flashlight_in_vehicles_button = tk.Checkbutton(root, text='Flashlight in Vehicles (1.3073.0.0 ONLY)', variable=flashlight_vehicles_var,
                                                command=lambda: (
                                                    flashlight_in_vehicles() if flashlight_vehicles_var.get() else undo_flashlight_in_vehicles()),
                                                font=("arcadia", 10, "bold"))
@@ -1791,6 +1991,24 @@ third_person_button = tk.Checkbutton(root, text='Third Person', variable=third_p
     third_person() if third_person_var.get() else undo_third_person()), font=("arcadia", 10, "bold"))
 third_person_button.pack()
 third_person_button.place(x=10, y=430)
+
+# third person info tooltip
+third_person_tooltip_text = "Play in a 3rd person perspective, campaign & multiplayer."
+third_person_tooltip = Label(root, text=third_person_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+third_person_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    third_person_tooltip.place(x=third_person_button.winfo_x() + third_person_button.winfo_width(), y=third_person_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    third_person_tooltip.pack_forget()
+    third_person_tooltip.place_forget()
+
+# button binds
+third_person_button.bind("<Enter>", enter)
+third_person_button.bind("<Leave>", leave)
 
 
 # zero gravity function
@@ -1874,6 +2092,24 @@ zero_gravity_button = tk.Checkbutton(root, text='Zero Gravity', variable=zero_gr
     zero_gravity() if zero_gravity_var.get() else undo_zero_gravity()), font=("arcadia", 10, "bold"))
 zero_gravity_button.pack()
 zero_gravity_button.place(x=10, y=460)
+
+# zero gravity info tooltip
+zero_gravity_tooltip_text = "Experience Halo 3 in Zero G."
+zero_gravity_tooltip = Label(root, text=zero_gravity_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+zero_gravity_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    zero_gravity_tooltip.place(x=zero_gravity_button.winfo_x() + zero_gravity_button.winfo_width(), y=zero_gravity_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    zero_gravity_tooltip.pack_forget()
+    zero_gravity_tooltip.place_forget()
+
+# button binds
+zero_gravity_button.bind("<Enter>", enter)
+zero_gravity_button.bind("<Leave>", leave)
 
 
 # always an elite function
@@ -1974,6 +2210,24 @@ always_elite_button = tk.Checkbutton(root, text='Always an Elite', variable=alwa
 always_elite_button.pack()
 always_elite_button.place(x=10, y=490)
 
+# always an elite info tooltip
+always_elite_tooltip_text = "Forces you to be an elite/arbiter model (single player & multiplayer)."
+always_elite_tooltip = Label(root, text=always_elite_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+always_elite_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    always_elite_tooltip.place(x=always_elite_button.winfo_x() + always_elite_button.winfo_width(), y=always_elite_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    always_elite_tooltip.pack_forget()
+    always_elite_tooltip.place_forget()
+
+# button binds
+always_elite_button.bind("<Enter>", enter)
+always_elite_button.bind("<Leave>", leave)
+
 
 # enlarge all objects function
 def enlarge_all_crate_objects():
@@ -2056,6 +2310,24 @@ enlarge_all_crate_objects_button = tk.Checkbutton(root, text='Enlarge Objects', 
 enlarge_all_crate_objects_button.pack()
 enlarge_all_crate_objects_button.place(x=10, y=520)
 
+# always an elite info tooltip
+enlarge_all_crate_objects_tooltip_text = "Enlarges all objects in game, including bipeds (excludes map geometry)."
+enlarge_all_crate_objects_tooltip = Label(root, text=enlarge_all_crate_objects_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+enlarge_all_crate_objects_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    enlarge_all_crate_objects_tooltip.place(x=enlarge_all_crate_objects_button.winfo_x() + enlarge_all_crate_objects_button.winfo_width(), y=enlarge_all_crate_objects_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    enlarge_all_crate_objects_tooltip.pack_forget()
+    enlarge_all_crate_objects_tooltip.place_forget()
+
+# button binds
+enlarge_all_crate_objects_button.bind("<Enter>", enter)
+enlarge_all_crate_objects_button.bind("<Leave>", leave)
+
 
 # ai spawning via effects function
 def ai_spawning_via_effects():
@@ -2128,6 +2400,24 @@ ai_spawning_via_effects_button = tk.Checkbutton(root, text='AI Spawning VIA Effe
                                                 font=("arcadia", 10, "bold"))
 ai_spawning_via_effects_button.pack()
 ai_spawning_via_effects_button.place(x=10, y=550)
+
+# AI Spawning VIA Effects info tooltip
+ai_spawning_via_effects_tooltip_text = "Enable AI spawning, via effects. \nMust have knowledge in Assembly/Mod Tools."
+ai_spawning_via_effects_tooltip = Label(root, text=ai_spawning_via_effects_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+ai_spawning_via_effects_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    ai_spawning_via_effects_tooltip.place(x=ai_spawning_via_effects_button.winfo_x() + ai_spawning_via_effects_button.winfo_width(), y=ai_spawning_via_effects_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    ai_spawning_via_effects_tooltip.pack_forget()
+    ai_spawning_via_effects_tooltip.place_forget()
+
+# button binds
+ai_spawning_via_effects_button.bind("<Enter>", enter)
+ai_spawning_via_effects_button.bind("<Leave>", leave)
 
 
 # laso in multiplayer function
@@ -2230,6 +2520,24 @@ laso_in_multiplayer_button = tk.Checkbutton(root, text='LASO in Multiplayer', va
 laso_in_multiplayer_button.pack()
 laso_in_multiplayer_button.place(x=10, y=580)
 
+# LASO in multiplayer info tooltip
+laso_in_multiplayer_tooltip_text = "Enable all skulls in multiplayer (excludes Acrophobia)."
+laso_in_multiplayer_tooltip = Label(root, text=laso_in_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+laso_in_multiplayer_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    laso_in_multiplayer_tooltip.place(x=laso_in_multiplayer_button.winfo_x() + laso_in_multiplayer_button.winfo_width(), y=laso_in_multiplayer_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    laso_in_multiplayer_tooltip.pack_forget()
+    laso_in_multiplayer_tooltip.place_forget()
+
+# button binds
+laso_in_multiplayer_button.bind("<Enter>", enter)
+laso_in_multiplayer_button.bind("<Leave>", leave)
+
 
 # fix forge falling speed function
 def fix_forge_falling_speed():
@@ -2284,6 +2592,24 @@ fix_forge_falling_speed_button = tk.Checkbutton(root, text='Fix Forge Falling Sp
                                                 font=("arcadia", 10, "bold"))
 fix_forge_falling_speed_button.pack()
 fix_forge_falling_speed_button.place(x=10, y=610)
+
+# fix forge falling speed info tooltip
+fix_forge_falling_speed_tooltip_text = "Resets your falling speed \nafter exiting forge mode."
+fix_forge_falling_speed_tooltip = Label(root, text=fix_forge_falling_speed_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+fix_forge_falling_speed_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    fix_forge_falling_speed_tooltip.place(x=fix_forge_falling_speed_button.winfo_x() + fix_forge_falling_speed_button.winfo_width(), y=fix_forge_falling_speed_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    fix_forge_falling_speed_tooltip.pack_forget()
+    fix_forge_falling_speed_tooltip.place_forget()
+
+# button binds
+fix_forge_falling_speed_button.bind("<Enter>", enter)
+fix_forge_falling_speed_button.bind("<Leave>", leave)
 
 
 # wall clip in theater function
@@ -2386,6 +2712,24 @@ wall_clip_in_theater_button = tk.Checkbutton(root, text='Wall Clip in Theater', 
 wall_clip_in_theater_button.pack()
 wall_clip_in_theater_button.place(x=10, y=640)
 
+# wall clip in theater info tooltip
+wall_clip_in_theater_tooltip_text = "Fly through walls & barriers in theater mode."
+wall_clip_in_theater_tooltip = Label(root, text=wall_clip_in_theater_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+wall_clip_in_theater_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    wall_clip_in_theater_tooltip.place(x=wall_clip_in_theater_button.winfo_x() + wall_clip_in_theater_button.winfo_width(), y=wall_clip_in_theater_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    wall_clip_in_theater_tooltip.pack_forget()
+    wall_clip_in_theater_tooltip.place_forget()
+
+# button binds
+wall_clip_in_theater_button.bind("<Enter>", enter)
+wall_clip_in_theater_button.bind("<Leave>", leave)
+
 
 # bottomless equipment function
 def bottomless_equipment():
@@ -2458,6 +2802,25 @@ bottomless_equipment_button = tk.Checkbutton(root, text='Bottomless Equipment', 
                                              font=("arcadia", 10, "bold"))
 bottomless_equipment_button.pack()
 bottomless_equipment_button.place(x=10, y=670)
+
+# bottomless equipment info tooltip
+bottomless_equipment_tooltip_text = "Never run out of equipment once picked up."
+bottomless_equipment_tooltip = Label(root, text=bottomless_equipment_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+bottomless_equipment_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    bottomless_equipment_tooltip.place(x=bottomless_equipment_button.winfo_x() + bottomless_equipment_button.winfo_width(), y=bottomless_equipment_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    bottomless_equipment_tooltip.pack_forget()
+    bottomless_equipment_tooltip.place_forget()
+
+# button binds
+bottomless_equipment_button.bind("<Enter>", enter)
+bottomless_equipment_button.bind("<Leave>", leave)
+
 
 
 # bump possession function
@@ -2539,6 +2902,24 @@ bump_possession_button = tk.Checkbutton(root, text='Bump Possession (1.3073.0.0 
                                         font=("arcadia", 10, "bold"))
 bump_possession_button.pack()
 bump_possession_button.place(x=10, y=700)
+
+# bump possession info tooltip
+bump_possession_tooltip_text = "Turn into & control any AI model by bumping into them. \nSingle player as well as multiplayer."
+bump_possession_tooltip = Label(root, text=bump_possession_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+bump_possession_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    bump_possession_tooltip.place(x=bump_possession_button.winfo_x() + bump_possession_button.winfo_width(), y=bump_possession_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    bump_possession_tooltip.pack_forget()
+    bump_possession_tooltip.place_forget()
+
+# button binds
+bump_possession_button.bind("<Enter>", enter)
+bump_possession_button.bind("<Leave>", leave)
 
 
 # broad stroke physics collision function
@@ -2641,6 +3022,24 @@ broad_stroke_physics_collision_button = tk.Checkbutton(root, text='Broad Stroke 
 broad_stroke_physics_collision_button.pack()
 broad_stroke_physics_collision_button.place(x=10, y=730)
 
+# broad stroke physics collision info tooltip
+broad_stroke_physics_collision_tooltip_text = "Currently in the process of fixing, unsure of its purpose."
+broad_stroke_physics_collision_tooltip = Label(root, text=broad_stroke_physics_collision_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+broad_stroke_physics_collision_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    broad_stroke_physics_collision_tooltip.place(x=broad_stroke_physics_collision_button.winfo_x() + broad_stroke_physics_collision_button.winfo_width(), y=broad_stroke_physics_collision_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    broad_stroke_physics_collision_tooltip.pack_forget()
+    broad_stroke_physics_collision_tooltip.place_forget()
+
+# button binds
+broad_stroke_physics_collision_button.bind("<Enter>", enter)
+broad_stroke_physics_collision_button.bind("<Leave>", leave)
+
 
 # no motion blur function
 def no_motion_blur():
@@ -2712,6 +3111,24 @@ no_motion_blur_button = tk.Checkbutton(root, text='No Motion Blur', variable=no_
 no_motion_blur_button.pack()
 no_motion_blur_button.place(x=10, y=760)
 
+# no motion blur info tooltip
+no_motion_blur_tooltip_text = "Halo 3 with no motion blur."
+no_motion_blur_tooltip = Label(root, text=no_motion_blur_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+no_motion_blur_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    no_motion_blur_tooltip.place(x=no_motion_blur_button.winfo_x() + no_motion_blur_button.winfo_width(), y=no_motion_blur_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    no_motion_blur_tooltip.pack_forget()
+    no_motion_blur_tooltip.place_forget()
+
+# button binds
+no_motion_blur_button.bind("<Enter>", enter)
+no_motion_blur_button.bind("<Leave>", leave)
+
 
 # theater sync function
 def theater_sync_fix():
@@ -2782,6 +3199,24 @@ theater_sync_button = tk.Checkbutton(root, text='Theater Sync Fix', variable=the
     theater_sync_fix() if theater_sync_var.get() else undo_theater_sync_fix()), font=("arcadia", 10, "bold"))
 theater_sync_button.pack()
 theater_sync_button.place(x=10, y=790)
+
+# theater sync fix info tooltip
+theater_sync_tooltip_text = "Force theater files to play, even when out of sync."
+theater_sync_tooltip = Label(root, text=theater_sync_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+theater_sync_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    theater_sync_tooltip.place(x=theater_sync_button.winfo_x() + theater_sync_button.winfo_width(), y=theater_sync_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    theater_sync_tooltip.pack_forget()
+    theater_sync_tooltip.place_forget()
+
+# button binds
+theater_sync_button.bind("<Enter>", enter)
+theater_sync_button.bind("<Leave>", leave)
 
 checkbox_widgets = [broad_stroke_physics_collision_button, no_motion_blur_button, bottomless_button,
                     all_grenades_at_once_button, bottomless_ammo_button, no_barriers_kill_triggers_button,

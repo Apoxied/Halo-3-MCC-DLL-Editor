@@ -48,6 +48,8 @@ Want to contribute? Great!
 
 Feel free to download the [source code](https://github.com/Apoxied/Halo-3-DLL-Editor/blob/master/main.py).
 
+Or, you're more than welcome to send me offset information and byte changes to Apoxied#1337 via Discord.
+
 
 ## License
 

@@ -10,7 +10,7 @@ Easily edit your halo3.dll file with easy to use checkbox options.
 
 ## Features
 
-- I have it searching for the array of bytes, versus the offset, which has been able to successfully find pretty much all options on older seasons, which will continue into newer seasons without needing an update (most of them).
+- I have it searching for the array of bytes, versus the offset, which has been able to successfully find pretty much all options on older seasons. It should be able to withstand future MCC updates without completely breaking. Most of the options, if not all, should stay intact.
 
 - It can detect if you have certain modifications already applied upon opening, which will automatically check the boxes.
 - You can deselect boxes to restore the original values.

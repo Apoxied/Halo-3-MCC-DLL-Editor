@@ -25,7 +25,7 @@ version_label.place(x=495, y=10)
 
 
 # Function to copy username to clipboard
-def copy_username():
+def copy_username(event):
     root.clipboard_clear()
     root.clipboard_append("Apoxied#1337")
     label_copy_message.config(text="Username copied to clipboard.")

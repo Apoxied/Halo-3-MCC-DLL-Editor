@@ -99,8 +99,6 @@ def clear_dll():
             undo_invulnerability_in_multiplayer()
         if flashlight_var.get() == 1:
             undo_flashlight_in_multiplayer()
-        if flashlight_vehicles_var.get() == 1:
-            undo_flashlight_in_vehicles()
         if third_person_var.get() == 1:
             undo_third_person()
         if zero_gravity_var.get() == 1:
@@ -161,7 +159,6 @@ def remove_dll():
     check_var.set(False)
     invul_var.set(False)
     flashlight_var.set(False)
-    flashlight_vehicles_var.set(False)
     third_person_var.set(False)
     zero_gravity_var.set(False)
     always_elite_var.set(False)
@@ -186,8 +183,7 @@ def remove_dll():
                         all_grenades_at_once_button, bottomless_ammo_button, no_barriers_kill_triggers_button,
                         thirty_tick_button, dual_wield_anything_button, custom_colors_multiplayer_button,
                         no_weapon_overheat_button, no_checkpoint_crashes_button, invul_in_multiplayer_button,
-                        flashlight_in_multiplayer_button,
-                        flashlight_in_vehicles_button, third_person_button, zero_gravity_button, always_elite_button,
+                        flashlight_in_multiplayer_button, third_person_button, zero_gravity_button, always_elite_button,
                         enlarge_all_crate_objects_button, ai_spawning_via_effects_button, laso_in_multiplayer_button,
                         fix_forge_falling_speed_button, wall_clip_in_theater_button, bottomless_equipment_button,
                         bump_possession_button, theater_sync_button]
@@ -256,8 +252,7 @@ def open_dll():
                                 all_grenades_at_once_button, bottomless_ammo_button, no_barriers_kill_triggers_button,
                                 thirty_tick_button, dual_wield_anything_button, custom_colors_multiplayer_button,
                                 no_weapon_overheat_button, no_checkpoint_crashes_button, invul_in_multiplayer_button,
-                                flashlight_in_multiplayer_button,
-                                flashlight_in_vehicles_button, third_person_button, zero_gravity_button,
+                                flashlight_in_multiplayer_button, third_person_button, zero_gravity_button,
                                 always_elite_button,
                                 enlarge_all_crate_objects_button, ai_spawning_via_effects_button,
                                 laso_in_multiplayer_button,
@@ -283,7 +278,6 @@ def open_dll():
             if version != "1.3073.0.0":
                 bump_possession_button.config(state="disabled")
                 fix_forge_falling_speed_button.config(state="disabled")
-                flashlight_in_vehicles_button.config(state="disabled")
 
         # Handle exception if invalid file or file not found
         except FileNotFoundError:
@@ -454,25 +448,15 @@ def check_offset():
         array_bytes_16 = b"\x90\x90\x90\x90\x99\x90\x8A"
         array_index_16 = dll_bytes.find(array_bytes_16)
 
-        if array_index_16 != -1:
+        array_bytes_35 = b"\x90\x90\x90\x90\x90\x90\x90\x90\xF3\x0F\x10"
+        array_index_35 = dll_bytes.find(array_bytes_35)
+
+        if array_index_16 and array_index_35 != -1:
             flashlight_var.set(1)
             flashlight_in_multiplayer_button.select()
         else:
             flashlight_var.set(0)
             flashlight_in_multiplayer_button.deselect()
-
-        # Check For Flashlight in Vehicles
-        offset_value_13 = dll_bytes[0x340257:0x340257 + 1]
-        offset_value_14 = dll_bytes[0x3402AF:0x3402AF + 1]
-        expected_values_13 = [0x8C]
-        expected_values_14 = [0x8F]
-
-        if offset_value_13[0] == expected_values_13[0] and offset_value_14[0] == expected_values_14[0]:
-            flashlight_vehicles_var.set(1)
-            flashlight_in_vehicles_button.select()
-        else:
-            flashlight_vehicles_var.set(0)
-            flashlight_in_vehicles_button.deselect()
 
         # Check For 3rd Person
         array_bytes_19 = b"\x90\x90\x44\x8D\x52\x03\x44\x89"
@@ -1699,11 +1683,11 @@ no_checkpoint_crashes_button.bind("<Enter>", enter)
 no_checkpoint_crashes_button.bind("<Leave>", leave)
 
 
-# invulnerability in multiplayer function
-def invulnerability_in_multiplayer():
+# no motion blur function
+def no_motion_blur():
     global dll_bytes
-    search_bytes = b"\x44\x8A\x0A\x4C\x8B\xD2\x41"
-    replace_bytes = b"\x41\xB1\x0C\x4C\x8B\xD2\x41"
+    search_bytes = b"\x01\x01\x01\x01\xC6\x40\x04\x00\xB8"
+    replace_bytes = b"\x00\x01\x01\x01\xC6\x40\x04\x00\xB8"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -1718,7 +1702,7 @@ def invulnerability_in_multiplayer():
 
         # Display the print statement in a Tkinter window
         global label
-        label = tk.Label(root, text="Invulnerability in Mulitiplayer Activated.")
+        label = tk.Label(root, text="No Motion Blur Activated.")
         label.pack()
         root.after(3000, label.destroy)
     else:
@@ -1728,11 +1712,11 @@ def invulnerability_in_multiplayer():
         root.after(3000, error_label.destroy)
 
 
-# undo invulnerability in multiplayer function
-def undo_invulnerability_in_multiplayer():
+# undo no motion blur function
+def undo_no_motion_blur():
     global dll_bytes
-    search_bytes = b"\x41\xB1\x0C\x4C\x8B\xD2\x41"
-    replace_bytes = b"\x44\x8A\x0A\x4C\x8B\xD2\x41"
+    search_bytes = b"\x00\x01\x01\x01\xC6\x40\x04\x00\xB8"
+    replace_bytes = b"\x01\x01\x01\x01\xC6\x40\x04\x00\xB8"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -1748,11 +1732,11 @@ def undo_invulnerability_in_multiplayer():
         # Update checkbox to none
         global text_state
         text_state = "Removed"
-        invul_var.set(0)
+        no_motion_blur_var.set(0)
 
         # Display the print statement in a Tkinter window
         global label
-        label = tk.Label(root, text="Invulnerability in Mulitiplayer Deactivated.")
+        label = tk.Label(root, text="No Motion Blur Deactivated.")
         label.pack()
         root.after(3000, label.destroy)
     else:
@@ -1762,136 +1746,124 @@ def undo_invulnerability_in_multiplayer():
         root.after(3000, error_label.destroy)
 
 
-# invulnerability in multiplayer checkbox
-invul_var = tk.IntVar()
-invul_in_multiplayer_button = tk.Checkbutton(root, text='Invulnerability in Multiplayer', variable=invul_var,
-                                             command=lambda: (
-                                                 invulnerability_in_multiplayer() if invul_var.get() else undo_invulnerability_in_multiplayer()),
-                                             font=("arcadia", 10, "bold"))
-invul_in_multiplayer_button.pack()
-invul_in_multiplayer_button.place(x=10, y=340)
+# no motion blur checkbox
+no_motion_blur_var = tk.IntVar()
+no_motion_blur_button = tk.Checkbutton(root, text='No Motion Blur', variable=no_motion_blur_var, command=lambda: (
+    no_motion_blur() if no_motion_blur_var.get() else undo_no_motion_blur()), font=("arcadia", 10, "bold"))
+no_motion_blur_button.pack()
+no_motion_blur_button.place(x=10, y=340)
 
-# invulnerability in multiplayer info tooltip
-invul_in_multiplayer_tooltip_text = "Invulnerability in multiplayer (exlcuding single player)."
-invul_in_multiplayer_tooltip = Label(root, text=invul_in_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-invul_in_multiplayer_tooltip.pack_forget()
+# no motion blur info tooltip
+no_motion_blur_tooltip_text = "Halo 3 with no motion blur."
+no_motion_blur_tooltip = Label(root, text=no_motion_blur_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+no_motion_blur_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
-    invul_in_multiplayer_tooltip.place(x=invul_in_multiplayer_button.winfo_x() + invul_in_multiplayer_button.winfo_width(), y=invul_in_multiplayer_button.winfo_y(), anchor='nw')
+    no_motion_blur_tooltip.place(x=no_motion_blur_button.winfo_x() + no_motion_blur_button.winfo_width(), y=no_motion_blur_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
-    invul_in_multiplayer_tooltip.pack_forget()
-    invul_in_multiplayer_tooltip.place_forget()
+    no_motion_blur_tooltip.pack_forget()
+    no_motion_blur_tooltip.place_forget()
 
 # button binds
-invul_in_multiplayer_button.bind("<Enter>", enter)
-invul_in_multiplayer_button.bind("<Leave>", leave)
+no_motion_blur_button.bind("<Enter>", enter)
+no_motion_blur_button.bind("<Leave>", leave)
 
 
-# flashlight in vehicle function
-def flashlight_in_vehicles():
+# flashlight in multiplayer function
+def flashlight_in_multiplayer():
     global dll_bytes
-    dll_bytes[0x340257:0x340257 + 1] = [0x8C]
-    dll_bytes[0x3402AF:0x3402AF + 1] = [0x8F]
+    search_bytes = b"\x0F\x85\x5A\x01\x00\x00\x8A\x83\x88"
+    replace_bytes = b"\x90\x90\x90\x90\x90\x90\x8A\x83\x88"
 
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
 
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
 
-# undo flashlight in vehicle function
-def undo_flashlight_in_vehicles():
-    if not filepath:
-        return
+    search_bytes = b"\x0F\xBA\xB3\x70\x01\x00\x00\x1B\xF3\x0F\x10"
+    replace_bytes = b"\x90\x90\x90\x90\x90\x90\x90\x90\xF3\x0F\x10"
 
-    # Write Changes to File
-    with open(filepath, 'rb') as f:
-        global dll_bytes
-        dll_bytes = bytearray(f.read())
-    dll_bytes[0x340257:0x340257 + 1] = [0x85]
-    dll_bytes[0x3402AF:0x3402AF + 1] = [0x84]
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
 
     # Write Changes to File
     with open(filepath, 'wb') as f:
         f.write(dll_bytes)
     global text_state
     text_state = "Removed"
-    flashlight_vehicles_var.set(0)
+    broad_stroke_physics_collision_var.set(0)
 
-
-# flashlight in vehicles checkbox
-flashlight_vehicles_var = tk.IntVar()
-flashlight_in_vehicles_button = tk.Checkbutton(root, text='Flashlight in Vehicles (1.3073.0.0 ONLY)', variable=flashlight_vehicles_var,
-                                               command=lambda: (
-                                                   flashlight_in_vehicles() if flashlight_vehicles_var.get() else undo_flashlight_in_vehicles()),
-                                               font=("arcadia", 10, "bold"))
-flashlight_in_vehicles_button.pack()
-flashlight_in_vehicles_button.place(x=10, y=400)
-
-
-# flashlight in multiplayer function
-def flashlight_in_multiplayer():
-    global dll_bytes
-    search_bytes = b"\x0F\x85\x5A\x01\x00\x00\x8A"
-    replace_bytes = b"\x90\x90\x90\x90\x99\x90\x8A"
-
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes)
-
-    # Check if search bytes are found
-    if array_index != -1:
-        dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
-
-        # Write Changes to File
-        with open(filepath, 'wb') as f:
-            f.write(dll_bytes)
-
-        # Display the print statement in a Tkinter window
-        global label
-        label = tk.Label(root, text="Flashlight in Mulitiplayer Activated.")
-        label.pack()
-        root.after(3000, label.destroy)
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Flashlight in multiplayer activated.")
+    label.pack()
+    root.after(3000, label.destroy)
 
 
 # undo flashlight in multiplayer function
 def undo_flashlight_in_multiplayer():
     global dll_bytes
-    search_bytes = b"\x90\x90\x90\x90\x99\x90\x8A"
-    replace_bytes = b"\x0F\x85\x5A\x01\x00\x00\x8A"
+    search_bytes = b"\x90\x90\x90\x90\x90\x90\x8A\x83\x88"
+    replace_bytes = b"\x0F\x85\x5A\x01\x00\x00\x8A\x83\x88"
 
     # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes)
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
 
-    # Check if search bytes are found
-    if array_index != -1:
-        dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
-
-        # Write Changes to File
-        with open(filepath, 'wb') as f:
-            f.write(dll_bytes)
-
-        # Update checkbox to none
-        global text_state
-        text_state = "Removed"
-        flashlight_var.set(0)
-
-        # Display the print statement in a Tkinter window
-        global label
-        label = tk.Label(root, text="Flashlight in Mulitiplayer Deactivated.")
-        label.pack()
-        root.after(3000, label.destroy)
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
     else:
         # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
         error_label.pack()
         root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x90\x90\x90\x90\x90\x90\x90\x90\xF3\x0F\x10"
+    replace_bytes = b"\x0F\xBA\xB3\x70\x01\x00\x00\x1B\xF3\x0F\x10"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+    global text_state
+    text_state = "Removed"
+    broad_stroke_physics_collision_var.set(0)
+
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Flashlight in multiplayer Deactivated.")
+    label.pack()
+    root.after(3000, label.destroy)
 
 
 # flashlight in multiplayer checkbox
@@ -1904,7 +1876,7 @@ flashlight_in_multiplayer_button.pack()
 flashlight_in_multiplayer_button.place(x=10, y=370)
 
 # flashlight in multiplayer info tooltip
-flashlight_in_multiplayer_tooltip_text = "Toggle the flashlight in multiplayer \n(up on d-pad/4 on keyboard)."
+flashlight_in_multiplayer_tooltip_text = "Toggle the flashlight in multiplayer.\nAlso works inside vehicle. \n(up on d-pad/4 on keyboard)."
 flashlight_in_multiplayer_tooltip = Label(root, text=flashlight_in_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
 flashlight_in_multiplayer_tooltip.pack_forget()
 
@@ -1922,11 +1894,11 @@ flashlight_in_multiplayer_button.bind("<Enter>", enter)
 flashlight_in_multiplayer_button.bind("<Leave>", leave)
 
 
-# 3rd person function
-def third_person():
+# theater sync function
+def theater_sync_fix():
     global dll_bytes
-    search_bytes = b"\x74\x0E\x44\x8D\x52\x03\x44\x89"
-    replace_bytes = b"\x90\x90\x44\x8D\x52\x03\x44\x89"
+    search_bytes = b"\x4C\x8B\xDC\x49\x89\x5B\x10\x57\x48\x81"
+    replace_bytes = b"\xC3\x90\x90\x49\x89\x5B\x10\x57\x48\x81"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -1941,7 +1913,7 @@ def third_person():
 
         # Display the print statement in a Tkinter window
         global label
-        label = tk.Label(root, text="3rd Person Activated.")
+        label = tk.Label(root, text="Theater Sync Fix Activated.")
         label.pack()
         root.after(3000, label.destroy)
     else:
@@ -1951,11 +1923,11 @@ def third_person():
         root.after(3000, error_label.destroy)
 
 
-# undo 3rd person function
-def undo_third_person():
+# undo theater sync function
+def undo_theater_sync_fix():
     global dll_bytes
-    search_bytes = b"\x90\x90\x44\x8D\x52\x03\x44\x89"
-    replace_bytes = b"\x74\x0E\x44\x8D\x52\x03\x44\x89"
+    search_bytes = b"\xC3\x90\x90\x49\x89\x5B\x10\x57\x48\x81"
+    replace_bytes = b"\x4C\x8B\xDC\x49\x89\x5B\x10\x57\x48\x81"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -1971,11 +1943,11 @@ def undo_third_person():
         # Update checkbox to none
         global text_state
         text_state = "Removed"
-        third_person_var.set(0)
+        theater_sync_var.set(0)
 
         # Display the print statement in a Tkinter window
         global label
-        label = tk.Label(root, text="3rd Person Deactivated.")
+        label = tk.Label(root, text="Theater Sync Fix Deactivated.")
         label.pack()
         root.after(3000, label.destroy)
     else:
@@ -1985,153 +1957,125 @@ def undo_third_person():
         root.after(3000, error_label.destroy)
 
 
-# third person checkbox
-third_person_var = tk.IntVar()
-third_person_button = tk.Checkbutton(root, text='Third Person', variable=third_person_var, command=lambda: (
-    third_person() if third_person_var.get() else undo_third_person()), font=("arcadia", 10, "bold"))
-third_person_button.pack()
-third_person_button.place(x=10, y=430)
+# theater sync fix checkbox
+theater_sync_var = tk.IntVar()
+theater_sync_button = tk.Checkbutton(root, text='Theater Sync Fix', variable=theater_sync_var, command=lambda: (
+    theater_sync_fix() if theater_sync_var.get() else undo_theater_sync_fix()), font=("arcadia", 10, "bold"))
+theater_sync_button.pack()
+theater_sync_button.place(x=10, y=400)
 
-# third person info tooltip
-third_person_tooltip_text = "Play in a 3rd person perspective, campaign & multiplayer."
-third_person_tooltip = Label(root, text=third_person_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-third_person_tooltip.pack_forget()
+# theater sync fix info tooltip
+theater_sync_tooltip_text = "Force theater files to play, even when out of sync."
+theater_sync_tooltip = Label(root, text=theater_sync_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+theater_sync_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
-    third_person_tooltip.place(x=third_person_button.winfo_x() + third_person_button.winfo_width(), y=third_person_button.winfo_y(), anchor='nw')
+    theater_sync_tooltip.place(x=theater_sync_button.winfo_x() + theater_sync_button.winfo_width(), y=theater_sync_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
-    third_person_tooltip.pack_forget()
-    third_person_tooltip.place_forget()
+    theater_sync_tooltip.pack_forget()
+    theater_sync_tooltip.place_forget()
 
 # button binds
-third_person_button.bind("<Enter>", enter)
-third_person_button.bind("<Leave>", leave)
+theater_sync_button.bind("<Enter>", enter)
+theater_sync_button.bind("<Leave>", leave)
 
 
-# zero gravity function
-def zero_gravity():
+# fix forge falling speed function
+def fix_forge_falling_speed():
     global dll_bytes
-    search_bytes = b"\xC7\x03\xF5\x7A\x85\x40\xC7\x43\x04\x00\x00"
-    replace_bytes = b"\xC7\x03\x00\x00\x00\x00\xC7\x43\x04\x00\x00"
-    start = 0
+    dll_bytes[0x10D582:0x10D582 + 7] = [0xE9, 0x4B, 0x7D, 0x0C, 0x00, 0x90, 0x90]
+    dll_bytes[0x1D52D0:0x1D52D0 + 22] = [0xC3, 0xCC, 0x80, 0xA3, 0x70, 0x03, 0x00, 0x00, 0xFE, 0x83, 0x63, 0x7C, 0x00,
+                                         0xE9, 0xA7, 0x82, 0xF3, 0xFF, 0x90, 0x90, 0x90, 0x90]
 
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes, start)
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
 
-    if array_index == -1:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-    else:
-        while True:
-            dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
-            start = array_index + len(replace_bytes)
-
-            # Find the index of original bytes
-            array_index = dll_bytes.find(search_bytes, start)
-            if array_index == -1:
-                break
-
-        # Write Changes to File
-        with open(filepath, 'wb') as f:
-            f.write(dll_bytes)
-
-        # Display the print statement in a Tkinter window
-        global label
-        label = tk.Label(root, text="Zero Gravity Activated.")
-        label.pack()
-        root.after(3000, label.destroy)
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Forge Falling Speed Fix Activated.")
+    label.pack()
+    root.after(3000, label.destroy)
 
 
-# undo zero gravity function
-def undo_zero_gravity():
-    global dll_bytes
-    search_bytes = b"\xC7\x03\x00\x00\x00\x00\xC7\x43\x04\x00\x00"
-    replace_bytes = b"\xC7\x03\xF5\x7A\x85\x40\xC7\x43\x04\x00\x00"
-    start = 0
+# undo fix forge falling speed function
+def undo_fix_forge_falling_speed():
+    if not filepath:
+        return
 
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes, start)
+    # Write Changes to File
+    with open(filepath, 'rb') as f:
+        global dll_bytes
+        dll_bytes = bytearray(f.read())
+    dll_bytes[0x10D582:0x10D582 + 7] = [0x80, 0xA3, 0x70, 0x03, 0x00, 0x00, 0xFE]
+    dll_bytes[0x1D52D0:0x1D52D0 + 22] = [0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x55, 0x57, 0x41,
+                                         0x57, 0x48, 0x8D, 0xAC, 0x24, 0xE0, 0xF8, 0xFF, 0xFF]
 
-    if array_index == -1:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-    else:
-        while True:
-            dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
-            start = array_index + len(replace_bytes)
-            array_index = dll_bytes.find(search_bytes, start)
-            if array_index == -1:
-                break
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+    global text_state
+    text_state = "Removed"
+    fix_forge_falling_speed_var.set(0)
 
-        # Write Changes to File
-        with open(filepath, 'wb') as f:
-            f.write(dll_bytes)
-
-        # Update checkbox to none
-        global text_state
-        text_state = "Removed"
-        zero_gravity_var.set(0)
-
-        # Display the print statement in a Tkinter window
-        global label
-        label = tk.Label(root, text="Zero Gravity Deactivated.")
-        label.pack()
-        root.after(3000, label.destroy)
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Forge Falling Speed Fix Deactivated.")
+    label.pack()
+    root.after(3000, label.destroy)
 
 
-# zero gravity checkbox
-zero_gravity_var = tk.IntVar()
-zero_gravity_button = tk.Checkbutton(root, text='Zero Gravity', variable=zero_gravity_var, command=lambda: (
-    zero_gravity() if zero_gravity_var.get() else undo_zero_gravity()), font=("arcadia", 10, "bold"))
-zero_gravity_button.pack()
-zero_gravity_button.place(x=10, y=460)
+# forge falling speed fix checkbox
+fix_forge_falling_speed_var = tk.IntVar()
+fix_forge_falling_speed_button = tk.Checkbutton(root, text='Fix Forge Falling Speed (1.3073.0.0 ONLY)',
+                                                variable=fix_forge_falling_speed_var, command=lambda: (
+        fix_forge_falling_speed() if fix_forge_falling_speed_var.get() else undo_fix_forge_falling_speed()),
+                                                font=("arcadia", 10, "bold"))
+fix_forge_falling_speed_button.pack()
+fix_forge_falling_speed_button.place(x=10, y=430)
 
-# zero gravity info tooltip
-zero_gravity_tooltip_text = "Experience Halo 3 in Zero G."
-zero_gravity_tooltip = Label(root, text=zero_gravity_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-zero_gravity_tooltip.pack_forget()
+# fix forge falling speed info tooltip
+fix_forge_falling_speed_tooltip_text = "Resets your falling speed \nafter exiting forge mode."
+fix_forge_falling_speed_tooltip = Label(root, text=fix_forge_falling_speed_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+fix_forge_falling_speed_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
-    zero_gravity_tooltip.place(x=zero_gravity_button.winfo_x() + zero_gravity_button.winfo_width(), y=zero_gravity_button.winfo_y(), anchor='nw')
+    fix_forge_falling_speed_tooltip.place(x=fix_forge_falling_speed_button.winfo_x() + fix_forge_falling_speed_button.winfo_width(), y=fix_forge_falling_speed_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
-    zero_gravity_tooltip.pack_forget()
-    zero_gravity_tooltip.place_forget()
+    fix_forge_falling_speed_tooltip.pack_forget()
+    fix_forge_falling_speed_tooltip.place_forget()
 
 # button binds
-zero_gravity_button.bind("<Enter>", enter)
-zero_gravity_button.bind("<Leave>", leave)
+fix_forge_falling_speed_button.bind("<Enter>", enter)
+fix_forge_falling_speed_button.bind("<Leave>", leave)
 
 
-# always an elite function
-def always_an_elite():
+# wall clip in theater function
+def wall_clip_in_theater():
     global dll_bytes
-    search_bytes = b"\x4A\x8B\x04\x10\x38\x48\x10\x75\x1B"
-    replace_bytes = b"\xEB\x42\x90\x90\x90\x90\x90\x90"
+    search_bytes = b"\x74\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
+    replace_bytes = b"\xEB\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
 
     # Find the index of original bytes
     index = dll_bytes.find(search_bytes)
     if index != -1:
 
         # Replace original bytes with replacement
-        dll_bytes[index + len(search_bytes):index + len(search_bytes) + len(replace_bytes)] = replace_bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
     else:
         # Show error message if search bytes are not found
         error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
         error_label.pack()
         root.after(3000, error_label.destroy)
 
-    search_bytes = b"\x11\xB9\x02\x00\x00\x00\x85\xDB\x74\x08\x83"
-    replace_bytes = b"\x11\xB9\x03\x00\x00\x00\x85\xDB\xEB\x08\x83"
+    search_bytes = b"\x7A\x0F\x75\x0D\xF3\x0F\x10\x41\x60"
+    replace_bytes = b"\xB8\x00\x00\x80\xBF\x66\x0F\x6E\xC0"
 
     # Find the index of original bytes
     index = dll_bytes.find(search_bytes)
@@ -2151,16 +2095,16 @@ def always_an_elite():
 
     # Display the print statement in a Tkinter window
     global label
-    label = tk.Label(root, text="Always An Elite Activated.")
+    label = tk.Label(root, text="Wall Clip in Theater Activated.")
     label.pack()
     root.after(3000, label.destroy)
 
 
-# undo always an elite function
-def undo_always_an_elite():
+# undo wall clip in theater function
+def undo_wall_clip_in_theater():
     global dll_bytes
-    search_bytes = b"\xEB\x42\x90\x90\x90\x90\x90\x90"
-    replace_bytes = b"\x41\x0F\xBE\x91\xD7\x01\x00\x00"
+    search_bytes = b"\xEB\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
+    replace_bytes = b"\x74\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
 
     # Find the index of original bytes
     index = dll_bytes.find(search_bytes)
@@ -2174,8 +2118,8 @@ def undo_always_an_elite():
         error_label.pack()
         root.after(3000, error_label.destroy)
 
-    search_bytes = b"\x11\xB9\x03\x00\x00\x00\x85\xDB\xEB\x08\x83"
-    replace_bytes = b"\x11\xB9\x02\x00\x00\x00\x85\xDB\x74\x08\x83"
+    search_bytes = b"\xB8\x00\x00\x80\xBF\x66\x0F\x6E\xC0"
+    replace_bytes = b"\x7A\x0F\x75\x0D\xF3\x0F\x10\x41\x60"
 
     # Find the index of original bytes
     index = dll_bytes.find(search_bytes)
@@ -2194,39 +2138,132 @@ def undo_always_an_elite():
         f.write(dll_bytes)
     global text_state
     text_state = "Removed"
-    always_elite_var.set(0)
+    wall_clip_in_theater_var.set(0)
 
     # Display the print statement in a Tkinter window
     global label
-    label = tk.Label(root, text="Always An Elite Activated.")
+    label = tk.Label(root, text="Wall Clip in Theater Deactivated.")
     label.pack()
     root.after(3000, label.destroy)
 
 
-# always an elite checkbox
-always_elite_var = tk.IntVar()
-always_elite_button = tk.Checkbutton(root, text='Always an Elite', variable=always_elite_var, command=lambda: (
-    always_an_elite() if always_elite_var.get() else undo_always_an_elite()), font=("arcadia", 10, "bold"))
-always_elite_button.pack()
-always_elite_button.place(x=10, y=490)
+# wall clip in theater checkbox
+wall_clip_in_theater_var = tk.IntVar()
+wall_clip_in_theater_button = tk.Checkbutton(root, text='Wall Clip in Theater', variable=wall_clip_in_theater_var,
+                                             command=lambda: (
+                                                 wall_clip_in_theater() if wall_clip_in_theater_var.get() else undo_wall_clip_in_theater()),
+                                             font=("arcadia", 10, "bold"))
+wall_clip_in_theater_button.pack()
+wall_clip_in_theater_button.place(x=10, y=460)
 
-# always an elite info tooltip
-always_elite_tooltip_text = "Forces you to be an elite/arbiter model (single player & multiplayer)."
-always_elite_tooltip = Label(root, text=always_elite_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-always_elite_tooltip.pack_forget()
+# wall clip in theater info tooltip
+wall_clip_in_theater_tooltip_text = "Fly through walls & barriers in theater mode."
+wall_clip_in_theater_tooltip = Label(root, text=wall_clip_in_theater_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+wall_clip_in_theater_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
-    always_elite_tooltip.place(x=always_elite_button.winfo_x() + always_elite_button.winfo_width(), y=always_elite_button.winfo_y(), anchor='nw')
+    wall_clip_in_theater_tooltip.place(x=wall_clip_in_theater_button.winfo_x() + wall_clip_in_theater_button.winfo_width(), y=wall_clip_in_theater_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
-    always_elite_tooltip.pack_forget()
-    always_elite_tooltip.place_forget()
+    wall_clip_in_theater_tooltip.pack_forget()
+    wall_clip_in_theater_tooltip.place_forget()
 
 # button binds
-always_elite_button.bind("<Enter>", enter)
-always_elite_button.bind("<Leave>", leave)
+wall_clip_in_theater_button.bind("<Enter>", enter)
+wall_clip_in_theater_button.bind("<Leave>", leave)
+
+
+# bottomless equipment function
+def bottomless_equipment():
+    global dll_bytes
+    search_bytes = b"\x04\x90\x0F\xB7\x90\xB4\x01\x00\x00\x83\xC8"
+    replace_bytes = b"\x04\x90\xBA\xFF\xFF\xFF\xFF\x90\x90\x83\xC8"
+    start = 0
+
+    # Find the index of original bytes
+    array_index = dll_bytes.find(search_bytes, start)
+
+    if array_index == -1:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at offsets. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+    else:
+        dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
+
+        # Write Changes to File
+        with open(filepath, 'wb') as f:
+            f.write(dll_bytes)
+
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Bottomless Equipment Activated.")
+    label.pack()
+    root.after(3000, label.destroy)
+
+
+# undo bottomless equipment function
+def undo_bottomless_equipment():
+    global dll_bytes
+    search_bytes = b"\x04\x90\xBA\xFF\xFF\xFF\xFF\x90\x90\x83\xC8"
+    replace_bytes = b"\x04\x90\x0F\xB7\x90\xB4\x01\x00\x00\x83\xC8"
+    start = 0
+
+    # Find the index of original bytes
+    array_index = dll_bytes.find(search_bytes, start)
+
+    if array_index == -1:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at offsets. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+    else:
+        dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
+
+        # Write Changes to File
+        with open(filepath, 'wb') as f:
+            f.write(dll_bytes)
+
+        # Update checkbox to none
+        global text_state
+        text_state = "Removed"
+        bottomless_equipment_var.set(0)
+
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Bottomless Equipment Deactivated.")
+    label.pack()
+    root.after(3000, label.destroy)
+
+
+# bottomless equipment checkbox
+bottomless_equipment_var = tk.IntVar()
+bottomless_equipment_button = tk.Checkbutton(root, text='Bottomless Equipment', variable=bottomless_equipment_var,
+                                             command=lambda: (
+                                                 bottomless_equipment() if bottomless_equipment_var.get() else undo_bottomless_equipment()),
+                                             font=("arcadia", 10, "bold"))
+bottomless_equipment_button.pack()
+bottomless_equipment_button.place(x=10, y=490)
+
+# bottomless equipment info tooltip
+bottomless_equipment_tooltip_text = "Never run out of equipment once picked up."
+bottomless_equipment_tooltip = Label(root, text=bottomless_equipment_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+bottomless_equipment_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    bottomless_equipment_tooltip.place(x=bottomless_equipment_button.winfo_x() + bottomless_equipment_button.winfo_width(), y=bottomless_equipment_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    bottomless_equipment_tooltip.pack_forget()
+    bottomless_equipment_tooltip.place_forget()
+
+# button binds
+bottomless_equipment_button.bind("<Enter>", enter)
+bottomless_equipment_button.bind("<Leave>", leave)
 
 
 # enlarge all objects function
@@ -2539,243 +2576,46 @@ laso_in_multiplayer_button.bind("<Enter>", enter)
 laso_in_multiplayer_button.bind("<Leave>", leave)
 
 
-# fix forge falling speed function
-def fix_forge_falling_speed():
+# 3rd person function
+def third_person():
     global dll_bytes
-    dll_bytes[0x10D582:0x10D582 + 7] = [0xE9, 0x4B, 0x7D, 0x0C, 0x00, 0x90, 0x90]
-    dll_bytes[0x1D52D0:0x1D52D0 + 22] = [0xC3, 0xCC, 0x80, 0xA3, 0x70, 0x03, 0x00, 0x00, 0xFE, 0x83, 0x63, 0x7C, 0x00,
-                                         0xE9, 0xA7, 0x82, 0xF3, 0xFF, 0x90, 0x90, 0x90, 0x90]
-
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
-
-    # Display the print statement in a Tkinter window
-    global label
-    label = tk.Label(root, text="Forge Falling Speed Fix Activated.")
-    label.pack()
-    root.after(3000, label.destroy)
-
-
-# undo fix forge falling speed function
-def undo_fix_forge_falling_speed():
-    if not filepath:
-        return
-
-    # Write Changes to File
-    with open(filepath, 'rb') as f:
-        global dll_bytes
-        dll_bytes = bytearray(f.read())
-    dll_bytes[0x10D582:0x10D582 + 7] = [0x80, 0xA3, 0x70, 0x03, 0x00, 0x00, 0xFE]
-    dll_bytes[0x1D52D0:0x1D52D0 + 22] = [0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74, 0x24, 0x10, 0x55, 0x57, 0x41,
-                                         0x57, 0x48, 0x8D, 0xAC, 0x24, 0xE0, 0xF8, 0xFF, 0xFF]
-
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
-    global text_state
-    text_state = "Removed"
-    fix_forge_falling_speed_var.set(0)
-
-    # Display the print statement in a Tkinter window
-    global label
-    label = tk.Label(root, text="Forge Falling Speed Fix Deactivated.")
-    label.pack()
-    root.after(3000, label.destroy)
-
-
-# forge falling speed fix checkbox
-fix_forge_falling_speed_var = tk.IntVar()
-fix_forge_falling_speed_button = tk.Checkbutton(root, text='Fix Forge Falling Speed (1.3073.0.0 ONLY)',
-                                                variable=fix_forge_falling_speed_var, command=lambda: (
-        fix_forge_falling_speed() if fix_forge_falling_speed_var.get() else undo_fix_forge_falling_speed()),
-                                                font=("arcadia", 10, "bold"))
-fix_forge_falling_speed_button.pack()
-fix_forge_falling_speed_button.place(x=10, y=610)
-
-# fix forge falling speed info tooltip
-fix_forge_falling_speed_tooltip_text = "Resets your falling speed \nafter exiting forge mode."
-fix_forge_falling_speed_tooltip = Label(root, text=fix_forge_falling_speed_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-fix_forge_falling_speed_tooltip.pack_forget()
-
-# attach location of tooltip to the right of the text associated with the checkbox.
-def enter(event):
-    fix_forge_falling_speed_tooltip.place(x=fix_forge_falling_speed_button.winfo_x() + fix_forge_falling_speed_button.winfo_width(), y=fix_forge_falling_speed_button.winfo_y(), anchor='nw')
-
-# hide tooltip when hovering away
-def leave(event):
-    fix_forge_falling_speed_tooltip.pack_forget()
-    fix_forge_falling_speed_tooltip.place_forget()
-
-# button binds
-fix_forge_falling_speed_button.bind("<Enter>", enter)
-fix_forge_falling_speed_button.bind("<Leave>", leave)
-
-
-# wall clip in theater function
-def wall_clip_in_theater():
-    global dll_bytes
-    search_bytes = b"\x74\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
-    replace_bytes = b"\xEB\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
+    search_bytes = b"\x74\x0E\x44\x8D\x52\x03\x44\x89"
+    replace_bytes = b"\x90\x90\x44\x8D\x52\x03\x44\x89"
 
     # Find the index of original bytes
-    index = dll_bytes.find(search_bytes)
-    if index != -1:
+    array_index = dll_bytes.find(search_bytes)
 
-        # Replace original bytes with replacement
-        dll_bytes[index:index + len(search_bytes)] = replace_bytes
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-
-    search_bytes = b"\x7A\x0F\x75\x0D\xF3\x0F\x10\x41\x60"
-    replace_bytes = b"\xB8\x00\x00\x80\xBF\x66\x0F\x6E\xC0"
-
-    # Find the index of original bytes
-    index = dll_bytes.find(search_bytes)
-    if index != -1:
-
-        # Replace original bytes with replacement
-        dll_bytes[index:index + len(search_bytes)] = replace_bytes
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
-
-    # Display the print statement in a Tkinter window
-    global label
-    label = tk.Label(root, text="Wall Clip in Theater Activated.")
-    label.pack()
-    root.after(3000, label.destroy)
-
-
-# undo wall clip in theater function
-def undo_wall_clip_in_theater():
-    global dll_bytes
-    search_bytes = b"\xEB\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
-    replace_bytes = b"\x74\x4F\x4C\x8D\x44\x24\x20\x8B\xCB"
-
-    # Find the index of original bytes
-    index = dll_bytes.find(search_bytes)
-    if index != -1:
-
-        # Replace with original bytes
-        dll_bytes[index:index + len(search_bytes)] = replace_bytes
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-
-    search_bytes = b"\xB8\x00\x00\x80\xBF\x66\x0F\x6E\xC0"
-    replace_bytes = b"\x7A\x0F\x75\x0D\xF3\x0F\x10\x41\x60"
-
-    # Find the index of original bytes
-    index = dll_bytes.find(search_bytes)
-    if index != -1:
-
-        # Replace with original bytes
-        dll_bytes[index:index + len(search_bytes)] = replace_bytes
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-
-    # Write Changes to File
-    with open(filepath, 'wb') as f:
-        f.write(dll_bytes)
-    global text_state
-    text_state = "Removed"
-    wall_clip_in_theater_var.set(0)
-
-    # Display the print statement in a Tkinter window
-    global label
-    label = tk.Label(root, text="Wall Clip in Theater Deactivated.")
-    label.pack()
-    root.after(3000, label.destroy)
-
-
-# wall clip in theater checkbox
-wall_clip_in_theater_var = tk.IntVar()
-wall_clip_in_theater_button = tk.Checkbutton(root, text='Wall Clip in Theater', variable=wall_clip_in_theater_var,
-                                             command=lambda: (
-                                                 wall_clip_in_theater() if wall_clip_in_theater_var.get() else undo_wall_clip_in_theater()),
-                                             font=("arcadia", 10, "bold"))
-wall_clip_in_theater_button.pack()
-wall_clip_in_theater_button.place(x=10, y=640)
-
-# wall clip in theater info tooltip
-wall_clip_in_theater_tooltip_text = "Fly through walls & barriers in theater mode."
-wall_clip_in_theater_tooltip = Label(root, text=wall_clip_in_theater_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-wall_clip_in_theater_tooltip.pack_forget()
-
-# attach location of tooltip to the right of the text associated with the checkbox.
-def enter(event):
-    wall_clip_in_theater_tooltip.place(x=wall_clip_in_theater_button.winfo_x() + wall_clip_in_theater_button.winfo_width(), y=wall_clip_in_theater_button.winfo_y(), anchor='nw')
-
-# hide tooltip when hovering away
-def leave(event):
-    wall_clip_in_theater_tooltip.pack_forget()
-    wall_clip_in_theater_tooltip.place_forget()
-
-# button binds
-wall_clip_in_theater_button.bind("<Enter>", enter)
-wall_clip_in_theater_button.bind("<Leave>", leave)
-
-
-# bottomless equipment function
-def bottomless_equipment():
-    global dll_bytes
-    search_bytes = b"\x04\x90\x0F\xB7\x90\xB4\x01\x00\x00\x83\xC8"
-    replace_bytes = b"\x04\x90\xBA\xFF\xFF\xFF\xFF\x90\x90\x83\xC8"
-    start = 0
-
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes, start)
-
-    if array_index == -1:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offsets. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-    else:
+    # Check if search bytes are found
+    if array_index != -1:
         dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
 
         # Write Changes to File
         with open(filepath, 'wb') as f:
             f.write(dll_bytes)
 
-    # Display the print statement in a Tkinter window
-    global label
-    label = tk.Label(root, text="Bottomless Equipment Activated.")
-    label.pack()
-    root.after(3000, label.destroy)
-
-
-# undo bottomless equipment function
-def undo_bottomless_equipment():
-    global dll_bytes
-    search_bytes = b"\x04\x90\xBA\xFF\xFF\xFF\xFF\x90\x90\x83\xC8"
-    replace_bytes = b"\x04\x90\x0F\xB7\x90\xB4\x01\x00\x00\x83\xC8"
-    start = 0
-
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes, start)
-
-    if array_index == -1:
+        # Display the print statement in a Tkinter window
+        global label
+        label = tk.Label(root, text="3rd Person Activated.")
+        label.pack()
+        root.after(3000, label.destroy)
+    else:
         # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offsets. Contact Apoxied#1337 via Discord.")
+        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
         error_label.pack()
         root.after(3000, error_label.destroy)
-    else:
+
+
+# undo 3rd person function
+def undo_third_person():
+    global dll_bytes
+    search_bytes = b"\x90\x90\x44\x8D\x52\x03\x44\x89"
+    replace_bytes = b"\x74\x0E\x44\x8D\x52\x03\x44\x89"
+
+    # Find the index of original bytes
+    array_index = dll_bytes.find(search_bytes)
+
+    # Check if search bytes are found
+    if array_index != -1:
         dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
 
         # Write Changes to File
@@ -2785,42 +2625,262 @@ def undo_bottomless_equipment():
         # Update checkbox to none
         global text_state
         text_state = "Removed"
-        bottomless_equipment_var.set(0)
+        third_person_var.set(0)
+
+        # Display the print statement in a Tkinter window
+        global label
+        label = tk.Label(root, text="3rd Person Deactivated.")
+        label.pack()
+        root.after(3000, label.destroy)
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+
+# third person checkbox
+third_person_var = tk.IntVar()
+third_person_button = tk.Checkbutton(root, text='Third Person', variable=third_person_var, command=lambda: (
+    third_person() if third_person_var.get() else undo_third_person()), font=("arcadia", 10, "bold"))
+third_person_button.pack()
+third_person_button.place(x=10, y=610)
+
+# third person info tooltip
+third_person_tooltip_text = "Play in a 3rd person perspective, campaign & multiplayer."
+third_person_tooltip = Label(root, text=third_person_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+third_person_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    third_person_tooltip.place(x=third_person_button.winfo_x() + third_person_button.winfo_width(), y=third_person_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    third_person_tooltip.pack_forget()
+    third_person_tooltip.place_forget()
+
+# button binds
+third_person_button.bind("<Enter>", enter)
+third_person_button.bind("<Leave>", leave)
+
+
+# zero gravity function
+def zero_gravity():
+    global dll_bytes
+    search_bytes = b"\xC7\x03\xF5\x7A\x85\x40\xC7\x43\x04\x00\x00"
+    replace_bytes = b"\xC7\x03\x00\x00\x00\x00\xC7\x43\x04\x00\x00"
+    start = 0
+
+    # Find the index of original bytes
+    array_index = dll_bytes.find(search_bytes, start)
+
+    if array_index == -1:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+    else:
+        while True:
+            dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
+            start = array_index + len(replace_bytes)
+
+            # Find the index of original bytes
+            array_index = dll_bytes.find(search_bytes, start)
+            if array_index == -1:
+                break
+
+        # Write Changes to File
+        with open(filepath, 'wb') as f:
+            f.write(dll_bytes)
+
+        # Display the print statement in a Tkinter window
+        global label
+        label = tk.Label(root, text="Zero Gravity Activated.")
+        label.pack()
+        root.after(3000, label.destroy)
+
+
+# undo zero gravity function
+def undo_zero_gravity():
+    global dll_bytes
+    search_bytes = b"\xC7\x03\x00\x00\x00\x00\xC7\x43\x04\x00\x00"
+    replace_bytes = b"\xC7\x03\xF5\x7A\x85\x40\xC7\x43\x04\x00\x00"
+    start = 0
+
+    # Find the index of original bytes
+    array_index = dll_bytes.find(search_bytes, start)
+
+    if array_index == -1:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+    else:
+        while True:
+            dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
+            start = array_index + len(replace_bytes)
+            array_index = dll_bytes.find(search_bytes, start)
+            if array_index == -1:
+                break
+
+        # Write Changes to File
+        with open(filepath, 'wb') as f:
+            f.write(dll_bytes)
+
+        # Update checkbox to none
+        global text_state
+        text_state = "Removed"
+        zero_gravity_var.set(0)
+
+        # Display the print statement in a Tkinter window
+        global label
+        label = tk.Label(root, text="Zero Gravity Deactivated.")
+        label.pack()
+        root.after(3000, label.destroy)
+
+
+# zero gravity checkbox
+zero_gravity_var = tk.IntVar()
+zero_gravity_button = tk.Checkbutton(root, text='Zero Gravity', variable=zero_gravity_var, command=lambda: (
+    zero_gravity() if zero_gravity_var.get() else undo_zero_gravity()), font=("arcadia", 10, "bold"))
+zero_gravity_button.pack()
+zero_gravity_button.place(x=10, y=640)
+
+# zero gravity info tooltip
+zero_gravity_tooltip_text = "Experience Halo 3 in Zero G."
+zero_gravity_tooltip = Label(root, text=zero_gravity_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+zero_gravity_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    zero_gravity_tooltip.place(x=zero_gravity_button.winfo_x() + zero_gravity_button.winfo_width(), y=zero_gravity_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    zero_gravity_tooltip.pack_forget()
+    zero_gravity_tooltip.place_forget()
+
+# button binds
+zero_gravity_button.bind("<Enter>", enter)
+zero_gravity_button.bind("<Leave>", leave)
+
+
+# always an elite function
+def always_an_elite():
+    global dll_bytes
+    search_bytes = b"\x4A\x8B\x04\x10\x38\x48\x10\x75\x1B"
+    replace_bytes = b"\xEB\x42\x90\x90\x90\x90\x90\x90"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index + len(search_bytes):index + len(search_bytes) + len(replace_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x11\xB9\x02\x00\x00\x00\x85\xDB\x74\x08\x83"
+    replace_bytes = b"\x11\xB9\x03\x00\x00\x00\x85\xDB\xEB\x08\x83"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
 
     # Display the print statement in a Tkinter window
     global label
-    label = tk.Label(root, text="Bottomless Equipment Deactivated.")
+    label = tk.Label(root, text="Always An Elite Activated.")
     label.pack()
     root.after(3000, label.destroy)
 
 
-# bottomless equipment checkbox
-bottomless_equipment_var = tk.IntVar()
-bottomless_equipment_button = tk.Checkbutton(root, text='Bottomless Equipment', variable=bottomless_equipment_var,
-                                             command=lambda: (
-                                                 bottomless_equipment() if bottomless_equipment_var.get() else undo_bottomless_equipment()),
-                                             font=("arcadia", 10, "bold"))
-bottomless_equipment_button.pack()
-bottomless_equipment_button.place(x=10, y=670)
+# undo always an elite function
+def undo_always_an_elite():
+    global dll_bytes
+    search_bytes = b"\xEB\x42\x90\x90\x90\x90\x90\x90"
+    replace_bytes = b"\x41\x0F\xBE\x91\xD7\x01\x00\x00"
 
-# bottomless equipment info tooltip
-bottomless_equipment_tooltip_text = "Never run out of equipment once picked up."
-bottomless_equipment_tooltip = Label(root, text=bottomless_equipment_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-bottomless_equipment_tooltip.pack_forget()
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x11\xB9\x03\x00\x00\x00\x85\xDB\xEB\x08\x83"
+    replace_bytes = b"\x11\xB9\x02\x00\x00\x00\x85\xDB\x74\x08\x83"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+    global text_state
+    text_state = "Removed"
+    always_elite_var.set(0)
+
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Always An Elite Activated.")
+    label.pack()
+    root.after(3000, label.destroy)
+
+
+# always an elite checkbox
+always_elite_var = tk.IntVar()
+always_elite_button = tk.Checkbutton(root, text='Always an Elite', variable=always_elite_var, command=lambda: (
+    always_an_elite() if always_elite_var.get() else undo_always_an_elite()), font=("arcadia", 10, "bold"))
+always_elite_button.pack()
+always_elite_button.place(x=10, y=670)
+
+# always an elite info tooltip
+always_elite_tooltip_text = "Forces you to be an elite/arbiter model (single player & multiplayer)."
+always_elite_tooltip = Label(root, text=always_elite_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+always_elite_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
-    bottomless_equipment_tooltip.place(x=bottomless_equipment_button.winfo_x() + bottomless_equipment_button.winfo_width(), y=bottomless_equipment_button.winfo_y(), anchor='nw')
+    always_elite_tooltip.place(x=always_elite_button.winfo_x() + always_elite_button.winfo_width(), y=always_elite_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
-    bottomless_equipment_tooltip.pack_forget()
-    bottomless_equipment_tooltip.place_forget()
+    always_elite_tooltip.pack_forget()
+    always_elite_tooltip.place_forget()
 
 # button binds
-bottomless_equipment_button.bind("<Enter>", enter)
-bottomless_equipment_button.bind("<Leave>", leave)
-
+always_elite_button.bind("<Enter>", enter)
+always_elite_button.bind("<Leave>", leave)
 
 
 # bump possession function
@@ -3041,11 +3101,11 @@ broad_stroke_physics_collision_button.bind("<Enter>", enter)
 broad_stroke_physics_collision_button.bind("<Leave>", leave)
 
 
-# no motion blur function
-def no_motion_blur():
+# invulnerability in multiplayer function
+def invulnerability_in_multiplayer():
     global dll_bytes
-    search_bytes = b"\x01\x01\x01\x01\xC6\x40\x04\x00\xB8"
-    replace_bytes = b"\x00\x01\x01\x01\xC6\x40\x04\x00\xB8"
+    search_bytes = b"\x44\x8A\x0A\x4C\x8B\xD2\x41"
+    replace_bytes = b"\x41\xB1\x0C\x4C\x8B\xD2\x41"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -3060,7 +3120,7 @@ def no_motion_blur():
 
         # Display the print statement in a Tkinter window
         global label
-        label = tk.Label(root, text="No Motion Blur Activated.")
+        label = tk.Label(root, text="Invulnerability in Mulitiplayer Activated.")
         label.pack()
         root.after(3000, label.destroy)
     else:
@@ -3070,100 +3130,11 @@ def no_motion_blur():
         root.after(3000, error_label.destroy)
 
 
-# undo no motion blur function
-def undo_no_motion_blur():
+# undo invulnerability in multiplayer function
+def undo_invulnerability_in_multiplayer():
     global dll_bytes
-    search_bytes = b"\x00\x01\x01\x01\xC6\x40\x04\x00\xB8"
-    replace_bytes = b"\x01\x01\x01\x01\xC6\x40\x04\x00\xB8"
-
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes)
-
-    # Check if search bytes are found
-    if array_index != -1:
-        dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
-
-        # Write Changes to File
-        with open(filepath, 'wb') as f:
-            f.write(dll_bytes)
-
-        # Update checkbox to none
-        global text_state
-        text_state = "Removed"
-        no_motion_blur_var.set(0)
-
-        # Display the print statement in a Tkinter window
-        global label
-        label = tk.Label(root, text="No Motion Blur Deactivated.")
-        label.pack()
-        root.after(3000, label.destroy)
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-
-
-# no motion blur checkbox
-no_motion_blur_var = tk.IntVar()
-no_motion_blur_button = tk.Checkbutton(root, text='No Motion Blur', variable=no_motion_blur_var, command=lambda: (
-    no_motion_blur() if no_motion_blur_var.get() else undo_no_motion_blur()), font=("arcadia", 10, "bold"))
-no_motion_blur_button.pack()
-no_motion_blur_button.place(x=10, y=760)
-
-# no motion blur info tooltip
-no_motion_blur_tooltip_text = "Halo 3 with no motion blur."
-no_motion_blur_tooltip = Label(root, text=no_motion_blur_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-no_motion_blur_tooltip.pack_forget()
-
-# attach location of tooltip to the right of the text associated with the checkbox.
-def enter(event):
-    no_motion_blur_tooltip.place(x=no_motion_blur_button.winfo_x() + no_motion_blur_button.winfo_width(), y=no_motion_blur_button.winfo_y(), anchor='nw')
-
-# hide tooltip when hovering away
-def leave(event):
-    no_motion_blur_tooltip.pack_forget()
-    no_motion_blur_tooltip.place_forget()
-
-# button binds
-no_motion_blur_button.bind("<Enter>", enter)
-no_motion_blur_button.bind("<Leave>", leave)
-
-
-# theater sync function
-def theater_sync_fix():
-    global dll_bytes
-    search_bytes = b"\x4C\x8B\xDC\x49\x89\x5B\x10\x57\x48\x81"
-    replace_bytes = b"\xC3\x90\x90\x49\x89\x5B\x10\x57\x48\x81"
-
-    # Find the index of original bytes
-    array_index = dll_bytes.find(search_bytes)
-
-    # Check if search bytes are found
-    if array_index != -1:
-        dll_bytes[array_index:array_index + len(search_bytes)] = replace_bytes
-
-        # Write Changes to File
-        with open(filepath, 'wb') as f:
-            f.write(dll_bytes)
-
-        # Display the print statement in a Tkinter window
-        global label
-        label = tk.Label(root, text="Theater Sync Fix Activated.")
-        label.pack()
-        root.after(3000, label.destroy)
-    else:
-        # Show error message if search bytes are not found
-        error_label = tk.Label(root, text="Bytes not found at offset. Contact Apoxied#1337 via Discord.")
-        error_label.pack()
-        root.after(3000, error_label.destroy)
-
-
-# undo theater sync function
-def undo_theater_sync_fix():
-    global dll_bytes
-    search_bytes = b"\xC3\x90\x90\x49\x89\x5B\x10\x57\x48\x81"
-    replace_bytes = b"\x4C\x8B\xDC\x49\x89\x5B\x10\x57\x48\x81"
+    search_bytes = b"\x41\xB1\x0C\x4C\x8B\xD2\x41"
+    replace_bytes = b"\x44\x8A\x0A\x4C\x8B\xD2\x41"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -3179,11 +3150,11 @@ def undo_theater_sync_fix():
         # Update checkbox to none
         global text_state
         text_state = "Removed"
-        theater_sync_var.set(0)
+        invul_var.set(0)
 
         # Display the print statement in a Tkinter window
         global label
-        label = tk.Label(root, text="Theater Sync Fix Deactivated.")
+        label = tk.Label(root, text="Invulnerability in Mulitiplayer Deactivated.")
         label.pack()
         root.after(3000, label.destroy)
     else:
@@ -3193,37 +3164,40 @@ def undo_theater_sync_fix():
         root.after(3000, error_label.destroy)
 
 
-# theater sync fix checkbox
-theater_sync_var = tk.IntVar()
-theater_sync_button = tk.Checkbutton(root, text='Theater Sync Fix', variable=theater_sync_var, command=lambda: (
-    theater_sync_fix() if theater_sync_var.get() else undo_theater_sync_fix()), font=("arcadia", 10, "bold"))
-theater_sync_button.pack()
-theater_sync_button.place(x=10, y=790)
+# invulnerability in multiplayer checkbox
+invul_var = tk.IntVar()
+invul_in_multiplayer_button = tk.Checkbutton(root, text='Invulnerability in Multiplayer', variable=invul_var,
+                                             command=lambda: (
+                                                 invulnerability_in_multiplayer() if invul_var.get() else undo_invulnerability_in_multiplayer()),
+                                             font=("arcadia", 10, "bold"))
+invul_in_multiplayer_button.pack()
+invul_in_multiplayer_button.place(x=10, y=760)
 
-# theater sync fix info tooltip
-theater_sync_tooltip_text = "Force theater files to play, even when out of sync."
-theater_sync_tooltip = Label(root, text=theater_sync_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
-theater_sync_tooltip.pack_forget()
+# invulnerability in multiplayer info tooltip
+invul_in_multiplayer_tooltip_text = "Invulnerability in multiplayer (exlcuding single player)."
+invul_in_multiplayer_tooltip = Label(root, text=invul_in_multiplayer_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+invul_in_multiplayer_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
-    theater_sync_tooltip.place(x=theater_sync_button.winfo_x() + theater_sync_button.winfo_width(), y=theater_sync_button.winfo_y(), anchor='nw')
+    invul_in_multiplayer_tooltip.place(x=invul_in_multiplayer_button.winfo_x() + invul_in_multiplayer_button.winfo_width(), y=invul_in_multiplayer_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
-    theater_sync_tooltip.pack_forget()
-    theater_sync_tooltip.place_forget()
+    invul_in_multiplayer_tooltip.pack_forget()
+    invul_in_multiplayer_tooltip.place_forget()
 
 # button binds
-theater_sync_button.bind("<Enter>", enter)
-theater_sync_button.bind("<Leave>", leave)
+invul_in_multiplayer_button.bind("<Enter>", enter)
+invul_in_multiplayer_button.bind("<Leave>", leave)
+
+
 
 checkbox_widgets = [broad_stroke_physics_collision_button, no_motion_blur_button, bottomless_button,
                     all_grenades_at_once_button, bottomless_ammo_button, no_barriers_kill_triggers_button,
                     thirty_tick_button, dual_wield_anything_button, custom_colors_multiplayer_button,
                     no_weapon_overheat_button, no_checkpoint_crashes_button, invul_in_multiplayer_button,
-                    flashlight_in_multiplayer_button,
-                    flashlight_in_vehicles_button, third_person_button, zero_gravity_button, always_elite_button,
+                    flashlight_in_multiplayer_button, third_person_button, zero_gravity_button, always_elite_button,
                     enlarge_all_crate_objects_button, ai_spawning_via_effects_button, laso_in_multiplayer_button,
                     fix_forge_falling_speed_button, wall_clip_in_theater_button, bottomless_equipment_button,
                     bump_possession_button, theater_sync_button]

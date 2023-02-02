@@ -5,6 +5,7 @@ import os
 import win32api
 import psutil
 from tkinter import Label
+import requests
 
 # Create the main window
 root = tk.Tk()
@@ -12,6 +13,16 @@ root.title("H3 DLL Editor")
 root.geometry("600x825")
 root.configure(bg="grey94")
 root.resizable(False, False)
+
+# Retrieve the image from a link online
+image_url = "https://imgur.com/k6j0CJq.png"
+response = requests.get(image_url)
+
+# Open the image using tkinter
+image = tk.PhotoImage(data=response.content)
+
+# Display the image as an icon
+root.tk.call('wm', 'iconphoto', root._w, image)
 
 # Initialize text state
 text_state = ""

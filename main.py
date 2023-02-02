@@ -688,7 +688,7 @@ def bottomless_grenades():
 
     # Display the print statement in a Tkinter window
     global label
-    label = tk.Label(root, text="Bottomless Grenades Activated. Offset: 0x{:X}".format(index))
+    label = tk.Label(root, text="Bottomless Grenades Activated.")
     label.pack()
     root.after(3000, label.destroy)
 

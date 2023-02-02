@@ -317,7 +317,7 @@ def check_offset():
         with open(filepath, 'rb') as f:
             dll_bytes = f.read()
 
-        # Define array of bytes to search for in the binary data
+        # Check for bottomless grenades
         array_bytes = b"\xC0\x7E\x18\x90\x90\xBA\x00\x00\x00\x04"
 
         # Search for the defined array of bytes in the binary data

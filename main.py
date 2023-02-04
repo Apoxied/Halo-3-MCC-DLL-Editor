@@ -69,7 +69,7 @@ def save_and_exit():
 
 # Create the save and exit button
 save_and_exit_button = tk.Button(
-    root, text="Save and Exit", command=save_and_exit, font=("arcadia", 12, "bold"),
+    root, text="Save and Exit", command=save_and_exit, cursor="hand2", font=("arcadia", 12, "bold", ),
     fg="white", bg="green"
 )
 save_and_exit_button.pack()
@@ -135,7 +135,7 @@ def clear_dll():
 
 
 # Clear Button
-clear_button = tk.Button(root, text='Clean DLL', command=clear_dll, font=("arcadia", 12, "bold"), fg='white', bg='red')
+clear_button = tk.Button(root, text='Clean DLL', command=clear_dll, font=("arcadia", 12, "bold"), fg='white', bg='red', cursor="hand2")
 clear_button.pack()
 clear_button.place(x=375, y=786)
 
@@ -301,7 +301,7 @@ def open_dll():
 
 
 # Button to open DLL file
-open_button = tk.Button(root, text="Open DLL", command=open_dll, font=('Arcadia', '12', 'bold'), bg="gold")
+open_button = tk.Button(root, text="Open DLL", command=open_dll, font=('Arcadia', '12', 'bold'), bg="gold", cursor="hand2")
 open_button.pack()
 open_button.place(x=10, y=10)
 
@@ -329,15 +329,30 @@ def check_offset():
             dll_bytes = f.read()
 
         # Check for bottomless grenades
-        array_bytes = b"\xC0\x7E\x18\x90\x90\xBA\x00\x00\x00\x04"
+        array_bytes1 = b"\xC0\x7E\x18\x90\x90\xBA\x00\x00\x00\x04"
+        array_bytes2 = b"\xC0\x7E\x18\x2A\xC3\xBA\x00\x00\x00\x04"
 
         # Search for the defined array of bytes in the binary data
-        array_index = dll_bytes.find(array_bytes)
+        array_index1 = dll_bytes.find(array_bytes1)
+        array_index2 = dll_bytes.find(array_bytes2)
 
         # Check if search bytes are found
-        if array_index != -1:
+        if array_index1 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(
+                array_index1 + 3).upper())  # add the index of the 4th byte to the overall index
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=180, y=74)
             bottomless_var.set(1)
             bottomless_button.select()
+        elif array_index2 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(
+                array_index2 + 3).upper())  # add the index of the 4th byte to the overall index
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=180, y=74)
 
         # If array of bytes is not found, update the state of bottomless grenades checkbox
         else:
@@ -347,16 +362,37 @@ def check_offset():
         # Check for all grenades at once
         array_bytes_1 = b"\x40\x84\xCF\x90\x90\x40\x8A\xDF\xEB\x11"
         array_index_1 = dll_bytes.find(array_bytes_1)
-
         array_bytes_2 = b"\xF6\x44\x8D\x7E\x04\x44\x8D\x66\x04"
         array_index_2 = dll_bytes.find(array_bytes_2)
-
         array_bytes_3 = b"\x41\xFF\xC6\x48\xFF\xC6\x45\x3B\xF4\x7C\xC9"
         array_index_3 = dll_bytes.find(array_bytes_3)
 
-        if array_index_3 != -1 and array_index_2 != -1 and array_index_1 != -1:
+        # Check for all grenades at once (default settings)
+        array_bytes_4 = b"\x40\x84\xCF\x74\x05\x40\x8A\xDF\xEB\x11"
+        array_index_4 = dll_bytes.find(array_bytes_4)
+        array_bytes_5 = b"\xF6\x44\x8D\x7E\x01\x44\x8D\x66\x04"
+        array_index_5 = dll_bytes.find(array_bytes_5)
+        array_bytes_6 = b"\x45\x03\xF7\x49\x03\xF7\x45\x3B\xF4\x7C\xC9"
+        array_index_6 = dll_bytes.find(array_bytes_6)
+
+        if array_index_1 != -1 and array_index_2 != -1 and array_index_3 != -1:
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_1 + 3).upper() + ", " +
+                               "{:X}".format(array_index_2 + 4).upper() + ", " +
+                               "{:X}".format(array_index_3).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=180, y=103)
             all_grenades_var.set(1)
             all_grenades_at_once_button.select()
+        elif array_index_4 != -1 and array_index_5 != -1 and array_index_6 != -1:
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_4 + 3).upper() + ", " +
+                               "{:X}".format(array_index_5 + 4).upper() + ", " +
+                               "{:X}".format(array_index_6).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=180, y=103)
         else:
             all_grenades_var.set(0)
             all_grenades_at_once_button.deselect()
@@ -365,9 +401,26 @@ def check_offset():
         array_bytes_4 = b"\x68\x75\x0D\x90\x90\x90\x90\x66\x42\x89"
         array_index_4 = dll_bytes.find(array_bytes_4)
 
+        array_bytes_5 = b"\x68\x75\x0D\x66\x41\x2B\xEF\x66\x42\x89"
+        array_index_5 = dll_bytes.find(array_bytes_5)
+
+
         if array_index_4 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(
+                array_index_4 + 3).upper())  # add the index of the 4th byte to the overall index
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=159, y=134)
             bottomless_ammo_var.set(1)
             bottomless_ammo_button.select()
+        elif array_index_5 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(
+                array_index_5 + 3).upper())  # add the index of the 4th byte to the overall index
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=159, y=134)
         else:
             bottomless_ammo_var.set(0)
             bottomless_ammo_button.deselect()
@@ -375,16 +428,37 @@ def check_offset():
         # Check for no barriers or kill triggers
         array_bytes_5 = b"\x31\xC0\x7E\x65\x65"
         array_index_5 = dll_bytes.find(array_bytes_5)
-
         array_bytes_6 = b"\x31\xC0\x7E\x6D\x65"
         array_index_6 = dll_bytes.find(array_bytes_6)
-
         array_bytes_7 = b"\x31\xD2\x7E\x72\x8B"
         array_index_7 = dll_bytes.find(array_bytes_7)
 
+        # Check for barriers or kill triggers (default settings)
+        array_bytes_8 = b"\x85\xC0\x7E\x65\x65"
+        array_index_8 = dll_bytes.find(array_bytes_8)
+        array_bytes_9 = b"\x85\xC0\x7E\x6D\x65"
+        array_index_9 = dll_bytes.find(array_bytes_9)
+        array_bytes_10 = b"\x85\xD2\x7E\x72\x8B"
+        array_index_10 = dll_bytes.find(array_bytes_10)
+
         if array_index_5 != -1 and array_index_6 != -1 and array_index_7 != -1:
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_5).upper() + ", " +
+                               "{:X}".format(array_index_6).upper() + ", " +
+                               "{:X}".format(array_index_7).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=232, y=164)
             no_barriers_kill_triggers_var.set(1)
             no_barriers_kill_triggers_button.select()
+        elif array_index_8 and array_index_9 and array_index_10 != -1:
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_8).upper() + ", " +
+                               "{:X}".format(array_index_9).upper() + ", " +
+                               "{:X}".format(array_index_10).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=232, y=164)
         else:
             no_barriers_kill_triggers_var.set(0)
             no_barriers_kill_triggers_button.deselect()
@@ -392,12 +466,29 @@ def check_offset():
         # Check for thirty tick
         array_bytes_8 = b"\x1D\x84\xC9\x74\x03\x0F"
         array_index_8 = dll_bytes.find(array_bytes_8)
+
+        array_bytes_9 = b"\x3B\x84\xC9\x74\x03\x0F"
+        array_index_9 = dll_bytes.find(array_bytes_9)
+
         if array_index_8 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_8).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=90, y=193)
             thirty_tick_var.set(1)
             thirty_tick_button.select()
+        elif array_index_9 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(
+                array_index_9).upper())  # add the index of the 4th byte to the overall index
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=90, y=193)
         else:
             thirty_tick_var.set(0)
             thirty_tick_button.deselect()
+
         # Check for Dual Wield Anything
         array_bytes_9 = b"\xB0\x01\x90\xC3\xCC\xCC\x48"
         array_index_9 = dll_bytes.find(array_bytes_9)
@@ -750,7 +841,7 @@ def undo_bottomless_grenades():
 # bottomless grenades checkbox
 bottomless_var = tk.IntVar()
 bottomless_button = tk.Checkbutton(root, text='Bottomless Grenades', variable=bottomless_var, command=lambda: (
-    bottomless_grenades() if bottomless_var.get() else undo_bottomless_grenades()), font=("arcadia", 10, "bold"))
+    bottomless_grenades() if bottomless_var.get() else undo_bottomless_grenades()), cursor="hand2", font=("arcadia", 10, "bold"))
 bottomless_button.pack()
 bottomless_button.place(x=10, y=70)
 
@@ -908,7 +999,7 @@ def undo_all_grenades_at_once():
 all_grenades_var = tk.IntVar()
 all_grenades_at_once_button = tk.Checkbutton(root, text='All Grenades At Once', variable=all_grenades_var,
                                              command=lambda: (
-                                                 all_grenades_at_once() if all_grenades_var.get() else undo_all_grenades_at_once()),
+                                                 all_grenades_at_once() if all_grenades_var.get() else undo_all_grenades_at_once()), cursor="hand2",
                                              font=("arcadia", 10, "bold"))
 all_grenades_at_once_button.pack()
 all_grenades_at_once_button.place(x=10, y=100)
@@ -1002,7 +1093,7 @@ def undo_bottomless_ammo():
 # Bottomless Ammo Checkbox
 bottomless_ammo_var = tk.IntVar()
 bottomless_ammo_button = tk.Checkbutton(root, text='Bottomless Ammo', variable=bottomless_ammo_var, command=lambda: (
-    bottomless_ammo() if bottomless_ammo_var.get() else undo_bottomless_ammo()), font=("arcadia", 10, "bold"))
+    bottomless_ammo() if bottomless_ammo_var.get() else undo_bottomless_ammo()), cursor="hand2", font=("arcadia", 10, "bold"))
 bottomless_ammo_button.pack()
 bottomless_ammo_button.place(x=10, y=130)
 
@@ -1154,7 +1245,7 @@ def undo_no_barriers_kill_triggers():
 no_barriers_kill_triggers_var = tk.IntVar()
 no_barriers_kill_triggers_button = tk.Checkbutton(root, text='No Barriers & No Kill Triggers',
                                                   variable=no_barriers_kill_triggers_var, command=lambda: (
-        no_barriers_kill_triggers() if no_barriers_kill_triggers_var.get() else undo_no_barriers_kill_triggers()),
+        no_barriers_kill_triggers() if no_barriers_kill_triggers_var.get() else undo_no_barriers_kill_triggers()), cursor="hand2",
                                                   font=("arcadia", 10, "bold"))
 no_barriers_kill_triggers_button.pack()
 no_barriers_kill_triggers_button.place(x=10, y=160)
@@ -1244,7 +1335,7 @@ def undo_thirty_tick():
 # 30 tick checkbox
 thirty_tick_var = tk.IntVar()
 thirty_tick_button = tk.Checkbutton(root, text='30 Tick', variable=thirty_tick_var,
-                                    command=lambda: (thirty_tick() if thirty_tick_var.get() else undo_thirty_tick()),
+                                    command=lambda: (thirty_tick() if thirty_tick_var.get() else undo_thirty_tick()), cursor="hand2",
                                     font=("arcadia", 10, "bold"))
 thirty_tick_button.pack()
 thirty_tick_button.place(x=10, y=190)
@@ -1335,7 +1426,7 @@ def undo_dual_wield_anything():
 dual_wield_anything_var = tk.IntVar()
 dual_wield_anything_button = tk.Checkbutton(root, text='Dual Wield Anything', variable=dual_wield_anything_var,
                                             command=lambda: (
-                                                dual_wield_anything() if dual_wield_anything_var.get() else undo_dual_wield_anything()),
+                                                dual_wield_anything() if dual_wield_anything_var.get() else undo_dual_wield_anything()), cursor="hand2",
                                             font=("arcadia", 10, "bold"))
 dual_wield_anything_button.pack()
 dual_wield_anything_button.place(x=10, y=220)
@@ -1484,7 +1575,7 @@ def undo_custom_colors_multiplayer():
 custom_colors_multiplayer_var = tk.IntVar()
 custom_colors_multiplayer_button = tk.Checkbutton(root, text='Custom Colors Always in Multiplayer',
                                                   variable=custom_colors_multiplayer_var, command=lambda: (
-        custom_colors_multiplayer() if custom_colors_multiplayer_var.get() else undo_custom_colors_multiplayer()),
+        custom_colors_multiplayer() if custom_colors_multiplayer_var.get() else undo_custom_colors_multiplayer()), cursor="hand2",
                                                   font=("arcadia", 10, "bold"))
 custom_colors_multiplayer_button.pack()
 custom_colors_multiplayer_button.place(x=10, y=250)

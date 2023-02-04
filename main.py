@@ -822,33 +822,64 @@ def check_offset():
         # Check For LASO in Multiplayer
         array_bytes_25 = b"\xB0\x01\x90\x48\x83\xC4\x28\xC3\xCC"
         array_index_25 = dll_bytes.find(array_bytes_25)
-
         array_bytes_26 = b"\xB0\x01\x90\x0F\x92\xC2\x8A\xC2\xC3"
         array_index_26 = dll_bytes.find(array_bytes_26)
 
+        # Check For LASO in Multiplayer (default settings)
+        array_bytes_27 = b"\x0F\x92\xC0\x48\x83\xC4\x28\xC3\xCC"
+        array_index_27 = dll_bytes.find(array_bytes_27)
+        array_bytes_28 = b"\x0F\xA3\xC8\x0F\x92\xC2\x8A\xC2\xC3"
+        array_index_28 = dll_bytes.find(array_bytes_28)
+
         if array_index_25 and array_index_26 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_25).upper() + ", " +
+                               "{:X}".format(array_index_26).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=172, y=584)
             laso_in_multiplayer_var.set(1)
             laso_in_multiplayer_button.select()
+        elif array_index_27 and array_index_28 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_27).upper() + ", " +
+                            "{:X}".format(array_index_28).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=172, y=584)
+
         else:
             laso_in_multiplayer_var.set(0)
             laso_in_multiplayer_button.deselect()
 
         # Check For Forge Falling Speed
-        offset_value_24 = dll_bytes[0x10D582:0x10D582 + 7]
-        expected_values_24 = [0xE9, 0x4B, 0x7D, 0x0C, 0x00, 0x90, 0x90]
-        match = True
-        for i in range(7):
-            if offset_value_24[i] != expected_values_24[i]:
-                match = False
-                break
-        offset_value_25 = dll_bytes[0x1D52D0:0x1D52D0 + 22]
-        expected_values_25 = [0xC3, 0xCC, 0x80, 0xA3, 0x70, 0x03, 0x00, 0x00, 0xFE, 0x83, 0x63, 0x7C, 0x00, 0xE9, 0xA7,
-                              0x82, 0xF3, 0xFF, 0x90, 0x90, 0x90, 0x90]
-        for i in range(22):
-            if offset_value_25[i] != expected_values_25[i]:
-                match = False
-                break
-        if match:
+        array_bytes_25 = b"\xE9\x4B\x7D\x0C\x00\x90\x90\xE8\x3E\x06\xF1"
+        array_index_25 = dll_bytes.find(array_bytes_25)
+        array_bytes_26 = b"\xC3\xCC\x80\xA3\x70\x03\x00\x00\xFE\x83\x63\x7C\x00\xE9\xA7\x82\xF3\xFF\x90\x90\x90\x90"
+        array_index_26 = dll_bytes.find(array_bytes_26)
+
+        # Check For Forge Falling Speed (default settings)
+        array_bytes_27 = b"\x80\xA3\x70\x03\x00\x00\xFE\xE8\x3E\x06\xF1"
+        array_index_27 = dll_bytes.find(array_bytes_27)
+        array_bytes_28 = b"\x48\x89\x5C\x24\x08\x48\x89\x74\x24\x10\x55\x57\x41\x57\x48\x8D\xAC\x24\xE0\xF8\xFF\xFF"
+        array_index_28 = dll_bytes.find(array_bytes_28)
+
+        if array_index_25 and array_index_26 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_25).upper() + ", " +
+                            "{:X}".format(array_index_26).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=312, y=433)
+            fix_forge_falling_speed_var.set(1)
+            fix_forge_falling_speed_button.select()
+        elif array_index_27 and array_index_28 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_27).upper() + ", " +
+                            "{:X}".format(array_index_28).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=312, y=433)
             fix_forge_falling_speed_var.set(1)
             fix_forge_falling_speed_button.select()
         else:
@@ -856,12 +887,33 @@ def check_offset():
             fix_forge_falling_speed_button.deselect()
 
         # Check For Wall Clip in Theater
-        array_bytes_29 = b"\x04\x90\xBA\xFF\xFF\xFF\xFF\x90\x90\x83\xC8"
+        array_bytes_29 = b"\xEB\x4F\x4C\x8D\x44\x24\x20\x8B\xCB\x48\x8D"
         array_index_29 = dll_bytes.find(array_bytes_29)
+        array_bytes_30 = b"\xB8\x00\x00\x80\xBF\x66\x0F\x6E\xC0"
+        array_index_30 = dll_bytes.find(array_bytes_30)
 
-        if array_index_29 != -1:
+        # Check For Wall Clip in Theater (default settings)
+        array_bytes_31 = b"\x74\x4F\x4C\x8D\x44\x24\x20\x8B\xCB\x48\x8D"
+        array_index_31 = dll_bytes.find(array_bytes_31)
+        array_bytes_32 = b"\x7A\x0F\x75\x0D\xF3\x0F\x10\x41\x60"
+        array_index_32 = dll_bytes.find(array_bytes_32)
+
+        if array_index_29 and array_index_30 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_29).upper() + ", " +
+                            "{:X}".format(array_index_30).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=175, y=464)
             wall_clip_in_theater_var.set(1)
             wall_clip_in_theater_button.select()
+        elif array_index_31 and array_index_32 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_31).upper() + ", " +
+                            "{:X}".format(array_index_32).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=175, y=464)
         else:
             wall_clip_in_theater_var.set(0)
             wall_clip_in_theater_button.deselect()
@@ -870,9 +922,24 @@ def check_offset():
         array_bytes_30 = b"\x04\x90\xBA\xFF\xFF\xFF\xFF\x90\x90\x83\xC8"
         array_index_30 = dll_bytes.find(array_bytes_30)
 
+        # Check For Bottomless Equipment
+        array_bytes_31 = b"\x04\x90\x0F\xB7\x90\xB4\x01\x00\x00\x83\xC8"
+        array_index_31 = dll_bytes.find(array_bytes_31)
+
         if array_index_30 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_30 + 2).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=185, y=494)
             bottomless_equipment_var.set(1)
             bottomless_equipment_button.select()
+        elif array_index_31 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_31 + 2).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=185, y=494)
         else:
             bottomless_equipment_var.set(0)
             bottomless_equipment_button.deselect()

@@ -490,11 +490,29 @@ def check_offset():
             thirty_tick_button.deselect()
 
         # Check for Dual Wield Anything
-        array_bytes_9 = b"\xB0\x01\x90\xC3\xCC\xCC\x48"
+        array_bytes_9 = b"\xB0\x01\x90\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
         array_index_9 = dll_bytes.find(array_bytes_9)
+        
+        # Check for Dual Wield Anything (default settings)
+        array_bytes_10 = b"\x0F\x95\xC0\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
+        array_index_10 = dll_bytes.find(array_bytes_10)
+
+
         if array_index_9 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_9).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=175, y=224)
             dual_wield_anything_var.set(1)
             dual_wield_anything_button.select()
+        elif array_index_10 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(
+                array_index_10).upper())  # add the index of the 4th byte to the overall index
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=90, y=193)
         else:
             dual_wield_anything_var.set(0)
             dual_wield_anything_button.deselect()
@@ -1362,8 +1380,8 @@ thirty_tick_button.bind("<Leave>", leave)
 # dual wield anything function
 def dual_wield_anything():
     global dll_bytes
-    search_bytes = b"\x0F\x95\xC0\xC3\xCC\xCC\x48"
-    replace_bytes = b"\xB0\x01\x90\xC3\xCC\xCC\x48"
+    search_bytes = b"\x0F\x95\xC0\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
+    replace_bytes = b"\xb0\x01\x90\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)
@@ -1391,8 +1409,8 @@ def dual_wield_anything():
 # undo dual wield anything function
 def undo_dual_wield_anything():
     global dll_bytes
-    search_bytes = b"\xB0\x01\x90\xC3\xCC\xCC\x48"
-    replace_bytes = b"\x0F\x95\xC0\xC3\xCC\xCC\x48"
+    search_bytes = b"\xb0\x01\x90\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
+    replace_bytes = b"\x0F\x95\xC0\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
 
     # Find the index of original bytes
     array_index = dll_bytes.find(search_bytes)

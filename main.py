@@ -492,7 +492,7 @@ def check_offset():
         # Check for Dual Wield Anything
         array_bytes_9 = b"\xB0\x01\x90\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
         array_index_9 = dll_bytes.find(array_bytes_9)
-        
+
         # Check for Dual Wield Anything (default settings)
         array_bytes_10 = b"\x0F\x95\xC0\xC3\xCC\xCC\x48\x89\x5C\x24\x08\x57\x48"
         array_index_10 = dll_bytes.find(array_bytes_10)
@@ -512,7 +512,7 @@ def check_offset():
                 array_index_10).upper())  # add the index of the 4th byte to the overall index
             offset_text.configure(state="disabled")
             offset_text.pack()
-            offset_text.place(x=90, y=193)
+            offset_text.place(x=175, y=224)
         else:
             dual_wield_anything_var.set(0)
             dual_wield_anything_button.deselect()
@@ -520,15 +520,38 @@ def check_offset():
         # Check For Custom Colors in Multiplayer
         array_bytes_10 = b"\xEB\x39\x8B\xD5\x48\x8D\x4C"
         array_index_10 = dll_bytes.find(array_bytes_10)
-
         array_bytes_11 = b"\xAC\x90\x00\x00\xEB\x4A\xBF"
         array_index_11 = dll_bytes.find(array_bytes_11)
-
         array_bytes_12 = b"\x90\x0F\x10\x4C\x24\x4C\xF3"
         array_index_12 = dll_bytes.find(array_bytes_12)
+
+        # Check For Custom Colors in Multiplayer (default settings)
+        array_bytes_13 = b"\x74\x39\x8B\xD5\x48\x8D\x4C"
+        array_index_13 = dll_bytes.find(array_bytes_13)
+        array_bytes_14 = b"\xAC\x01\x00\x00\xEB\x4A\xBF"
+        array_index_14 = dll_bytes.find(array_bytes_14)
+        array_bytes_15 = b"\xF3\x0F\x10\x4C\x24\x4C\xF3"
+        array_index_15 = dll_bytes.find(array_bytes_15)
+
+
         if array_index_10 and array_index_11 and array_index_12 != -1:
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_10).upper() + ", " +
+                               "{:X}".format(array_index_11 + 1).upper() + ", " +
+                               "{:X}".format(array_index_12).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=275, y=254)
             custom_colors_multiplayer_var.set(1)
             custom_colors_multiplayer_button.select()
+        elif array_index_13 and array_index_14 and array_index_15 != -1:
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_13).upper() + ", " +
+                               "{:X}".format(array_index_14 + 1).upper() + ", " +
+                               "{:X}".format(array_index_15).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=275, y=254)
         else:
             custom_colors_multiplayer_var.set(0)
             custom_colors_multiplayer_button.deselect()
@@ -536,9 +559,25 @@ def check_offset():
         # Check For No Weapon Overheat
         array_bytes_13 = b"\x66\x0F\xEF\xC0\x90\x90\x90\x90\x90"
         array_index_13 = dll_bytes.find(array_bytes_13)
+
+        # Check For No Weapon Overheat (default settings)
+        array_bytes_14 = b"\xF3\x41\x0F\x58\x86\xE4\x00\x00\x00"
+        array_index_14 = dll_bytes.find(array_bytes_14)
+
         if array_index_13 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_13).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=182, y=284)
             no_weapon_overheat_var.set(1)
             no_weapon_overheat_button.select()
+        elif array_index_14 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_14).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=182, y=284)
         else:
             no_weapon_overheat_var.set(0)
             no_weapon_overheat_button.deselect()
@@ -546,9 +585,25 @@ def check_offset():
         # Check For No Checkpoint Crashes
         array_bytes_14 = b"\xEB\x08\x45\x8B\xC2\xE8"
         array_index_14 = dll_bytes.find(array_bytes_14)
+
+        # Check For No Checkpoint Crashes (default settings)
+        array_bytes_15 = b"\x74\x08\x45\x8B\xC2\xE8"
+        array_index_15 = dll_bytes.find(array_bytes_15)
+
         if array_index_14 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_14).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=267, y=314)
             check_var.set(1)
             no_checkpoint_crashes_button.select()
+        elif array_index_15 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_15).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=267, y=314)
         else:
             check_var.set(0)
             no_checkpoint_crashes_button.deselect()
@@ -557,9 +612,24 @@ def check_offset():
         array_bytes_15 = b"\x41\xB1\x0C\x4C\x8B\xD2\x41"
         array_index_15 = dll_bytes.find(array_bytes_15)
 
+        # Check For Invulnerability in Multiplayer (default settings)
+        array_bytes_16 = b"\x44\x8A\x0A\x4C\x8B\xD2\x41"
+        array_index_16 = dll_bytes.find(array_bytes_16)
+
         if array_index_15 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_15).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=267, y=765)
             invul_var.set(1)
             invul_in_multiplayer_button.select()
+        elif array_index_16 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_16).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=227, y=765)
         else:
             invul_var.set(0)
             invul_in_multiplayer_button.deselect()

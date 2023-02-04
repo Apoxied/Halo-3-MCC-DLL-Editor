@@ -629,7 +629,7 @@ def check_offset():
             offset_text.insert("1.0", "{:X}".format(array_index_16).upper())
             offset_text.configure(state="disabled")
             offset_text.pack()
-            offset_text.place(x=227, y=765)
+            offset_text.place(x=227, y=764)
         else:
             invul_var.set(0)
             invul_in_multiplayer_button.deselect()
@@ -708,7 +708,7 @@ def check_offset():
         if count == 3:
             zero_gravity_var.set(1)
             zero_gravity_button.select()
-            offset_text = tk.Text(root, height=1, width=40, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
             offset_text.insert("1.0", ', '.join("{:X}".format(offset).upper() for offset in offsets))
             offset_text.configure(state="disabled")
             offset_text.pack()
@@ -729,7 +729,7 @@ def check_offset():
             if new_count == 3:
                 zero_gravity_var.set(0)
                 zero_gravity_button.deselect()
-                offset_text = tk.Text(root, height=1, width=40, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+                offset_text = tk.Text(root, height=1, width=28, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
                 offset_text.insert("1.0", ', '.join("{:X}".format(offset).upper() for offset in new_offsets))
                 offset_text.configure(state="disabled")
                 offset_text.pack()

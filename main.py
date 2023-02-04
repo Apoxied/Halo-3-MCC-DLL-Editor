@@ -621,7 +621,7 @@ def check_offset():
             offset_text.insert("1.0", "{:X}".format(array_index_15).upper())
             offset_text.configure(state="disabled")
             offset_text.pack()
-            offset_text.place(x=267, y=765)
+            offset_text.place(x=227, y=765)
             invul_var.set(1)
             invul_in_multiplayer_button.select()
         elif array_index_16 != -1:

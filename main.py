@@ -738,13 +738,31 @@ def check_offset():
         # Check For Always Elite
         array_bytes_21 = b"\xEB\x42\x90\x90\x90\x90\x90\x90"
         array_index_21 = dll_bytes.find(array_bytes_21)
-
         array_bytes_22 = b"\x11\xB9\x03\x00\x00\x00\x85\xDB\xEB\x08\x83"
         array_index_22 = dll_bytes.find(array_bytes_22)
 
+        # Check For Always Elite
+        array_bytes_23 = b"\x10\x38\x48\x10\x75\x1B\x41\x0F\xBE\x91"
+        array_index_23 = dll_bytes.find(array_bytes_23)
+        array_bytes_24 = b"\x11\xB9\x02\x00\x00\x00\x85\xDB\x74\x08\x83"
+        array_index_24 = dll_bytes.find(array_bytes_24)
+
         if array_index_21 and array_index_22 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_21).upper() + ", " +
+                               "{:X}".format(array_index_22 + 2).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=140, y=674)
             always_elite_var.set(1)
             always_elite_button.select()
+        elif array_index_23 and array_index_24 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_23 + 6).upper() + ", " +
+                               "{:X}".format(array_index_24 + 2).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=140, y=674)
         else:
             always_elite_var.set(0)
             always_elite_button.deselect()
@@ -753,9 +771,24 @@ def check_offset():
         array_bytes_23 = b"\xC7\x83\x8C\x00\x00\x00\x00\x00\x40\x40\x90\x90\x90\x90\x90\x90\x90\x90"
         array_index_23 = dll_bytes.find(array_bytes_23)
 
+        # Check For Enlarge All objects (default settings)
+        array_bytes_24 = b"\x8B\x46\x54\x89\x83\x88\x00\x00\x00\x8B\x46\x58\x89\x83\x8C\x00\x00\x00"
+        array_index_24 = dll_bytes.find(array_bytes_24)
+
         if array_index_23 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_23).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=135, y=524)
             enlarge_crate_var.set(1)
             enlarge_all_crate_objects_button.select()
+        elif array_index_24 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_24).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=145, y=524)
         else:
             enlarge_crate_var.set(0)
             enlarge_all_crate_objects_button.deselect()
@@ -764,9 +797,24 @@ def check_offset():
         array_bytes_24 = b"\x00\xF6\x00\x01\x90\x90\x90\x90\x90\x90\xF3\x0F\x10\x0D"
         array_index_24 = dll_bytes.find(array_bytes_24)
 
+        # Check For AI Spawning VIA Effects
+        array_bytes_25 = b"\x00\xF6\x00\x01\x0F\x84\x88\x00\x00\x00\xF3\x0F\x10\x0D"
+        array_index_25 = dll_bytes.find(array_bytes_25)
+
         if array_index_24 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_24 + 4).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=197, y=554)
             ai_spawning_var.set(1)
             ai_spawning_via_effects_button.select()
+        elif array_index_25 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_25 + 4).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=197, y=554)
         else:
             ai_spawning_var.set(0)
             ai_spawning_via_effects_button.deselect()
@@ -830,41 +878,45 @@ def check_offset():
             bottomless_equipment_button.deselect()
 
         # Check For Bump Possession
-        offset_value_31 = dll_bytes[0x2C66F8:0x2C66F8 + 152]
-        expected_values_31 = [0xC3, 0xCC, 0xF3, 0x0F, 0x10, 0x05, 0x4E, 0xB6, 0x57, 0x00, 0xE8, 0x05, 0x11,
-                              0xE2, 0xFF, 0xF6, 0xD8, 0x88, 0x83, 0xA0, 0x04, 0x00, 0x00, 0x40, 0x88, 0xC5,
-                              0xB8, 0x01, 0x00, 0x00, 0x00, 0x0F, 0xB6, 0x8F, 0x96, 0x00, 0x00, 0x00, 0xD3,
-                              0xE0, 0xF7, 0xC5, 0x03, 0x10, 0x00, 0x00, 0x74, 0x26, 0x83, 0xBF, 0x78, 0x01,
-                              0x00, 0x00, 0xFF, 0x75, 0x1D, 0x8B, 0x8B, 0x78, 0x01, 0x00, 0x00, 0x8B, 0xD6,
-                              0xE8, 0x36, 0x11, 0xE1, 0xFF, 0x80, 0xBF, 0x96, 0x00, 0x00, 0x00, 0x00, 0x75,
-                              0x07, 0x40, 0x88, 0xAF, 0xA0, 0x04, 0x00, 0x00, 0xE9, 0x0E, 0xA8, 0x0A, 0x00,
-                              0x90, 0xF3, 0x0F, 0x7F, 0x44, 0x24, 0x20, 0xE8, 0xA1, 0x4F, 0xDD, 0xFF, 0x48,
-                              0xBF, 0x01, 0x00, 0x00, 0x00, 0x0F, 0xB6, 0x88, 0x96, 0x00, 0x00, 0x00, 0xD3,
-                              0xE7, 0xF7, 0xC7, 0x03, 0x10, 0x00, 0x00, 0x74, 0x11, 0x83, 0xB8, 0x78, 0x01,
-                              0x00, 0x00, 0xFF, 0x74, 0x08, 0x41, 0x8B, 0xD9, 0xE9, 0x6D, 0xE0, 0x06, 0x00,
-                              0x8B, 0x78, 0x0C, 0xE9, 0x5D, 0xE0, 0x06, 0x00, 0x90]
-        match = True
-        for i in range(152):
-            if offset_value_31[i] != expected_values_31[i]:
-                match = False
-                break
-        offset_value_32 = dll_bytes[0x370F4C:0x370F4C + 21]
-        expected_values_32 = [0x83, 0xCA, 0xFF, 0x8B, 0xCE, 0xE8, 0x02, 0x74, 0xFC, 0xFF, 0x48, 0x8B, 0xF8,
-                              0xE9, 0x9C, 0x57, 0xF5, 0xFF, 0x90, 0x90, 0x90]
-        for i in range(21):
-            if offset_value_32[i] != expected_values_32[i]:
-                match = False
-                break
-        offset_value_33 = dll_bytes[0x580908:0x580908 + 1]
-        expected_values_33 = [0xEB]
+        array_bytes_30 = b"\xc3\xcc\xf3\x0f\x10\x05\x4e\xb6\x57\x00\xe8\x05\x11\xe2\xff\xf6\xd8\x88\x83\xa0\x04\x00\x00\x40\x88\xc5\xb8\x01\x00\x00\x00\x0f\xb6\x8f\x96\x00\x00\x00\xd3\xe0\xf7\xc5\x03\x10\x00\x00\x74\x26\x83\xbf\x78\x01\x00\x00\xff\x75\x1d\x8b\x8b\x78\x01\x00\x00\x8b\xd6\xe8\x36\x11\xe1\xff\x80\xbf\x96\x00\x00\x00\x00\x75\x07\x40\x88\xaf\xa0\x04\x00\x00\xe9\x0e\xa8\x0a\x00\x90\xf3\x0f\x7f\x44\x24\x20\xe8\xa1\x4f\xdd\xff\x48\xbf\x01\x00\x00\x00\x0f\xb6\x88\x96\x00\x00\x00\xd3\xe7\xf7\xc7\x03\x10\x00\x00\x74\x11\x83\xb8\x78\x01\x00\x00\xff\x74\x08\x41\x8b\xd9\xe9\x6d\xe0\x06\x00\x8b\x78\x0c\xe9\x5d\xe0\x06\x00\x90"
+        array_index_30 = dll_bytes.find(array_bytes_30)
+        array_bytes_31 = b"\xe9\x96\x1f\xf9\xff\x8b\xcf\xe8\x9f\xff\xff"
+        array_index_31 = dll_bytes.find(array_bytes_31)
+        array_bytes_32 = b"\x83\xca\xff\x8b\xce\xe8\x02\x74\xfc\xff\x48\x8b\xf8\xe9\x9c\x57\xf5\xff\x90\x90\x90"
+        array_index_32 = dll_bytes.find(array_bytes_32)
+        array_bytes_33 = b"\xeb\x26\x33\xd2\x48\x8d\x4d\xdf\x44\x8d\x42\x34\xe8\x50\xcc\x07\x00\x8b"
+        array_index_33 = dll_bytes.find(array_bytes_33)
 
-        for i in range(1):
-            if offset_value_33[i] != expected_values_33[i]:
-                match = False
-                break
-        if match:
+        # Check For Bump Possession (default settings)
+        array_bytes_34 = b"\x4c\x8b\xdc\x49\x89\x53\x10\x4d\x89\x43\x18\x4d\x89\x4b\x20\x48\x81\xec\x38\x01\x00\x00\x80\x3d\x23\xb9\xbc\x02\x00\x0f\x84\x94\x00\x00\x00\x80\x3d\x18\xb9\xbc\x02\x00\x0f\x85\x87\x00\x00\x00\x0f\x28\x05\xf1\xd1\x57\x00\x48\x8d\x44\x24\x20\x48\x85\xc9\x4d\x8d\x4b\x18\x0f\x11\x44\x24\x20\x48\x0f\x45\xc1\x4c\x8b\xc2\xba\xff\x00\x00\x00\x48\x8d\x4c\x24\x30\x0f\x10\x00\xf3\x0f\x7f\x44\x24\x20\xe8\xa1\x4f\xdd\xff\x48\x8d\x15\x7a\x2a\x53\x00\x48\x8d\x4c\x24\x30\xff\x15\x9f\x51\x42\x00\x48\x85\xc0\x48\x8d\x54\x24\x20\x48\x8d\x4c\x24\x30\x41\x0f\x95\xc0\xe8\xf1\x04\x00\x00\x80\x3d\xab\xb8\xbc\x02\x00\x74\x1f"
+        array_index_34 = dll_bytes.find(array_bytes_34)
+        array_bytes_35 = b"\x8b\x78\x0c\xeb\x22\x8b\xcf\xe8\x9f\xff\xff"
+        array_index_35 = dll_bytes.find(array_bytes_35)
+        array_bytes_36 = b"\xf3\x0f\x10\x05\xfc\x0d\x4d\x00\xe8\xb3\x68\xd7\xff\xf6\xd8\x88\x83\xa0\x04\x00\x00"
+        array_index_36 = dll_bytes.find(array_bytes_36)
+        array_bytes_37 = b"\x7f\x26\x33\xd2\x48\x8d\x4d\xdf\x44\x8d\x42\x34\xe8\x50\xcc\x07\x00\x8b"
+        array_index_37 = dll_bytes.find(array_bytes_37)
+
+        if array_index_30 and array_index_31 and array_index_32 and array_index_33 != -1:
+            offset_text = tk.Text(root, height=1, width=34, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_30).upper() + ", " +
+                               "{:X}".format(array_index_31).upper() + ", " +
+                               "{:X}".format(array_index_32).upper() + ", " +
+                               "{:X}".format(array_index_33).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=267, y=704)
             bump_possession_var.set(1)
             bump_possession_button.select()
+        elif array_index_34 and array_index_35 and array_index_36 and array_index_37 != -1:
+            offset_text = tk.Text(root, height=1, width=34, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_34).upper() + ", " +
+                               "{:X}".format(array_index_35).upper() + ", " +
+                               "{:X}".format(array_index_36).upper() + ", " +
+                               "{:X}".format(array_index_37).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=267, y=704)
         else:
             bump_possession_var.set(0)
             bump_possession_button.deselect()
@@ -872,13 +924,31 @@ def check_offset():
         # Check for Broad Stroke Physics Collision
         array_bytes_34 = b"\xEB\x04\x84\xD2\x75\x1E\x8B\xC1"
         array_index_34 = dll_bytes.find(array_bytes_34)
-
         array_bytes_35 = b"\xD0\x48\x8B\x5C\x24\x08\xB0\x01\x90"
         array_index_35 = dll_bytes.find(array_bytes_35)
 
+        # Check for Broad Stroke Physics Collision
+        array_bytes_36 = b"\x74\x04\x84\xD2\x75\x1E\x8B\xC1"
+        array_index_36 = dll_bytes.find(array_bytes_36)
+        array_bytes_37 = b"\xD0\x48\x8B\x5C\x24\x08\x41\x8A\xC2"
+        array_index_37 = dll_bytes.find(array_bytes_37)
+
         if array_index_34 and array_index_35 != -1:
+            offset_text = tk.Text(root, height=1, width=24, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_34).upper() + ", " +
+                               "{:X}".format(array_index_35 + 6).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=239, y=734)
             broad_stroke_physics_collision_var.set(1)
             broad_stroke_physics_collision_button.select()
+        elif array_index_36 and array_index_37 != -1:
+            offset_text = tk.Text(root, height=1, width=24, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_36).upper() + ", " +
+                               "{:X}".format(array_index_37 + 6).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=239, y=734)
         else:
             broad_stroke_physics_collision_var.set(0)
             broad_stroke_physics_collision_button.deselect()
@@ -887,9 +957,24 @@ def check_offset():
         array_bytes_36 = b"\x00\x01\x01\x01\xC6\x40\x04\x00\xB8"
         array_index_36 = dll_bytes.find(array_bytes_36)
 
+        # Check For No Motion Blur (default settings)
+        array_bytes_37 = b"\x01\x01\x01\x01\xC6\x40\x04\x00\xB8"
+        array_index_37 = dll_bytes.find(array_bytes_37)
+
         if array_index_36 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_36).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=140, y=344)
             no_motion_blur_var.set(1)
             no_motion_blur_button.select()
+        elif array_index_37 != -1:
+            offset_text = tk.Text(root, height=1, width=14, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_37).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=140, y=344)
         else:
             no_motion_blur_var.set(0)
             no_motion_blur_button.deselect()
@@ -898,9 +983,23 @@ def check_offset():
         array_bytes_37 = b"\xC3\x90\x90\x49\x89\x5B\x10\x57\x48\x81"
         array_index_37 = dll_bytes.find(array_bytes_37)
 
+        array_bytes_38 = b"\x4C\x8B\xDC\x49\x89\x5B\x10\x57\x48\x81"
+        array_index_38 = dll_bytes.find(array_bytes_38)
+
         if array_index_37 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_37).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=154, y=404)
             theater_sync_var.set(1)
             theater_sync_button.select()
+        elif array_index_38 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_38).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=154, y=404)
         else:
             theater_sync_var.set(0)
             theater_sync_button.deselect()
@@ -2596,7 +2695,7 @@ enlarge_all_crate_objects_button = tk.Checkbutton(root, text='Enlarge Objects', 
 enlarge_all_crate_objects_button.pack()
 enlarge_all_crate_objects_button.place(x=10, y=520)
 
-# always an elite info tooltip
+# enlarge all objects info tooltip
 enlarge_all_crate_objects_tooltip_text = "Enlarges all objects in game, including bipeds (excludes map geometry)."
 enlarge_all_crate_objects_tooltip = Label(root, text=enlarge_all_crate_objects_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
 enlarge_all_crate_objects_tooltip.pack_forget()
@@ -3101,7 +3200,7 @@ def undo_always_an_elite():
 
     # Display the print statement in a Tkinter window
     global label
-    label = tk.Label(root, text="Always An Elite Activated.")
+    label = tk.Label(root, text="Always An Elite Deactivated.")
     label.pack()
     root.after(3000, label.destroy)
 
@@ -3135,26 +3234,72 @@ always_elite_button.bind("<Leave>", leave)
 # bump possession function
 def bump_possession():
     global dll_bytes
-    dll_bytes[0x2C66F8:0x2C66F8 + 152] = [0xC3, 0xCC, 0xF3, 0x0F, 0x10, 0x05, 0x4E, 0xB6, 0x57, 0x00, 0xE8, 0x05, 0x11,
-                                          0xE2, 0xFF, 0xF6, 0xD8, 0x88, 0x83, 0xA0, 0x04, 0x00, 0x00, 0x40, 0x88, 0xC5,
-                                          0xB8, 0x01, 0x00, 0x00, 0x00, 0x0F, 0xB6, 0x8F, 0x96, 0x00, 0x00, 0x00, 0xD3,
-                                          0xE0, 0xF7, 0xC5, 0x03, 0x10, 0x00, 0x00, 0x74, 0x26, 0x83, 0xBF, 0x78, 0x01,
-                                          0x00, 0x00, 0xFF, 0x75, 0x1D, 0x8B, 0x8B, 0x78, 0x01, 0x00, 0x00, 0x8B, 0xD6,
-                                          0xE8, 0x36, 0x11, 0xE1, 0xFF, 0x80, 0xBF, 0x96, 0x00, 0x00, 0x00, 0x00, 0x75,
-                                          0x07, 0x40, 0x88, 0xAF, 0xA0, 0x04, 0x00, 0x00, 0xE9, 0x0E, 0xA8, 0x0A, 0x00,
-                                          0x90, 0xF3, 0x0F, 0x7F, 0x44, 0x24, 0x20, 0xE8, 0xA1, 0x4F, 0xDD, 0xFF, 0x48,
-                                          0xBF, 0x01, 0x00, 0x00, 0x00, 0x0F, 0xB6, 0x88, 0x96, 0x00, 0x00, 0x00, 0xD3,
-                                          0xE7, 0xF7, 0xC7, 0x03, 0x10, 0x00, 0x00, 0x74, 0x11, 0x83, 0xB8, 0x78, 0x01,
-                                          0x00, 0x00, 0xFF, 0x74, 0x08, 0x41, 0x8B, 0xD9, 0xE9, 0x6D, 0xE0, 0x06, 0x00,
-                                          0x8B, 0x78, 0x0C, 0xE9, 0x5D, 0xE0, 0x06, 0x00, 0x90]
-    dll_bytes[0x3347C5:0x3347C5 + 5] = [0xE9, 0x96, 0x1F, 0xF9, 0xFF]
-    dll_bytes[0x370F4C:0x370F4C + 21] = [0x83, 0xCA, 0xFF, 0x8B, 0xCE, 0xE8, 0x02, 0x74, 0xFC, 0xFF, 0x48, 0x8B, 0xF8,
-                                         0xE9, 0x9C, 0x57, 0xF5, 0xFF, 0x90, 0x90, 0x90]
-    dll_bytes[0x580908:0x580908 + 1] = [0xEB]
+    search_bytes = b"\x4c\x8b\xdc\x49\x89\x53\x10\x4d\x89\x43\x18\x4d\x89\x4b\x20\x48\x81\xec\x38\x01\x00\x00\x80\x3d\x23\xb9\xbc\x02\x00\x0f\x84\x94\x00\x00\x00\x80\x3d\x18\xb9\xbc\x02\x00\x0f\x85\x87\x00\x00\x00\x0f\x28\x05\xf1\xd1\x57\x00\x48\x8d\x44\x24\x20\x48\x85\xc9\x4d\x8d\x4b\x18\x0f\x11\x44\x24\x20\x48\x0f\x45\xc1\x4c\x8b\xc2\xba\xff\x00\x00\x00\x48\x8d\x4c\x24\x30\x0f\x10\x00\xf3\x0f\x7f\x44\x24\x20\xe8\xa1\x4f\xdd\xff\x48\x8d\x15\x7a\x2a\x53\x00\x48\x8d\x4c\x24\x30\xff\x15\x9f\x51\x42\x00\x48\x85\xc0\x48\x8d\x54\x24\x20\x48\x8d\x4c\x24\x30\x41\x0f\x95\xc0\xe8\xf1\x04\x00\x00\x80\x3d\xab\xb8\xbc\x02\x00\x74\x1f"
+    replace_bytes = b"\xc3\xcc\xf3\x0f\x10\x05\x4e\xb6\x57\x00\xe8\x05\x11\xe2\xff\xf6\xd8\x88\x83\xa0\x04\x00\x00\x40\x88\xc5\xb8\x01\x00\x00\x00\x0f\xb6\x8f\x96\x00\x00\x00\xd3\xe0\xf7\xc5\x03\x10\x00\x00\x74\x26\x83\xbf\x78\x01\x00\x00\xff\x75\x1d\x8b\x8b\x78\x01\x00\x00\x8b\xd6\xe8\x36\x11\xe1\xff\x80\xbf\x96\x00\x00\x00\x00\x75\x07\x40\x88\xaf\xa0\x04\x00\x00\xe9\x0e\xa8\x0a\x00\x90\xf3\x0f\x7f\x44\x24\x20\xe8\xa1\x4f\xdd\xff\x48\xbf\x01\x00\x00\x00\x0f\xb6\x88\x96\x00\x00\x00\xd3\xe7\xf7\xc7\x03\x10\x00\x00\x74\x11\x83\xb8\x78\x01\x00\x00\xff\x74\x08\x41\x8b\xd9\xe9\x6d\xe0\x06\x00\x8b\x78\x0c\xe9\x5d\xe0\x06\x00\x90"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x8b\x78\x0c\xeb\x22\x8b\xcf\xe8\x9f\xff\xff"
+    replace_bytes = b"\xe9\x96\x1f\xf9\xff\x8b\xcf\xe8\x9f\xff\xff"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\xf3\x0f\x10\x05\xfc\x0d\x4d\x00\xe8\xb3\x68\xd7\xff\xf6\xd8\x88\x83\xa0\x04\x00\x00"
+    replace_bytes = b"\x83\xca\xff\x8b\xce\xe8\x02\x74\xfc\xff\x48\x8b\xf8\xe9\x9c\x57\xf5\xff\x90\x90\x90"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 3rd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x7f\x26\x33\xd2\x48\x8d\x4d\xdf\x44\x8d\x42\x34\xe8\x50\xcc\x07\x00\x8b"
+    replace_bytes = b"\xeb\x26\x33\xd2\x48\x8d\x4d\xdf\x44\x8d\x42\x34\xe8\x50\xcc\x07\x00\x8b"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 4th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
 
     # Write Changes to File
     with open(filepath, 'wb') as f:
         f.write(dll_bytes)
+    global text_state
+    text_state = "Removed"
+    always_elite_var.set(0)
 
     # Display the print statement in a Tkinter window
     global label
@@ -3165,36 +3310,73 @@ def bump_possession():
 
 # undo bump possession function
 def undo_bump_possession():
-    if not filepath:
-        return
+    global dll_bytes
+    search_bytes = b"\xc3\xcc\xf3\x0f\x10\x05\x4e\xb6\x57\x00\xe8\x05\x11\xe2\xff\xf6\xd8\x88\x83\xa0\x04\x00\x00\x40\x88\xc5\xb8\x01\x00\x00\x00\x0f\xb6\x8f\x96\x00\x00\x00\xd3\xe0\xf7\xc5\x03\x10\x00\x00\x74\x26\x83\xbf\x78\x01\x00\x00\xff\x75\x1d\x8b\x8b\x78\x01\x00\x00\x8b\xd6\xe8\x36\x11\xe1\xff\x80\xbf\x96\x00\x00\x00\x00\x75\x07\x40\x88\xaf\xa0\x04\x00\x00\xe9\x0e\xa8\x0a\x00\x90\xf3\x0f\x7f\x44\x24\x20\xe8\xa1\x4f\xdd\xff\x48\xbf\x01\x00\x00\x00\x0f\xb6\x88\x96\x00\x00\x00\xd3\xe7\xf7\xc7\x03\x10\x00\x00\x74\x11\x83\xb8\x78\x01\x00\x00\xff\x74\x08\x41\x8b\xd9\xe9\x6d\xe0\x06\x00\x8b\x78\x0c\xe9\x5d\xe0\x06\x00\x90"
+    replace_bytes = b"\x4c\x8b\xdc\x49\x89\x53\x10\x4d\x89\x43\x18\x4d\x89\x4b\x20\x48\x81\xec\x38\x01\x00\x00\x80\x3d\x23\xb9\xbc\x02\x00\x0f\x84\x94\x00\x00\x00\x80\x3d\x18\xb9\xbc\x02\x00\x0f\x85\x87\x00\x00\x00\x0f\x28\x05\xf1\xd1\x57\x00\x48\x8d\x44\x24\x20\x48\x85\xc9\x4d\x8d\x4b\x18\x0f\x11\x44\x24\x20\x48\x0f\x45\xc1\x4c\x8b\xc2\xba\xff\x00\x00\x00\x48\x8d\x4c\x24\x30\x0f\x10\x00\xf3\x0f\x7f\x44\x24\x20\xe8\xa1\x4f\xdd\xff\x48\x8d\x15\x7a\x2a\x53\x00\x48\x8d\x4c\x24\x30\xff\x15\x9f\x51\x42\x00\x48\x85\xc0\x48\x8d\x54\x24\x20\x48\x8d\x4c\x24\x30\x41\x0f\x95\xc0\xe8\xf1\x04\x00\x00\x80\x3d\xab\xb8\xbc\x02\x00\x74\x1f"
 
-    # Write Changes to File
-    with open(filepath, 'rb') as f:
-        global dll_bytes
-        dll_bytes = bytearray(f.read())
-    dll_bytes[0x2C66F8:0x2C66F8 + 152] = [0x4C, 0x8B, 0xDC, 0x49, 0x89, 0x53, 0x10, 0x4D, 0x89, 0x43, 0x18, 0x4D, 0x89,
-                                          0x4B, 0x20, 0x48, 0x81, 0xEC, 0x38, 0x01, 0x00, 0x00, 0x80, 0x3D, 0x23, 0xB9,
-                                          0xBC, 0x02, 0x00, 0x0F, 0x84, 0x94, 0x00, 0x00, 0x00, 0x80, 0x3D, 0x18, 0xB9,
-                                          0xBC, 0x02, 0x00, 0x0F, 0x85, 0x87, 0x00, 0x00, 0x00, 0x0F, 0x28, 0x05, 0xF1,
-                                          0xD1, 0x57, 0x00, 0x48, 0x8D, 0x44, 0x24, 0x20, 0x48, 0x85, 0xC9, 0x4D, 0x8D,
-                                          0x4B, 0x18, 0x0F, 0x11, 0x44, 0x24, 0x20, 0x48, 0x0F, 0x45, 0xC1, 0x4C, 0x8B,
-                                          0xC2, 0xBA, 0xFF, 0x00, 0x00, 0x00, 0x48, 0x8D, 0x4C, 0x24, 0x30, 0x0F, 0x10,
-                                          0x00, 0xF3, 0x0F, 0x7F, 0x44, 0x24, 0x20, 0xE8, 0xA1, 0x4F, 0xDD, 0xFF, 0x48,
-                                          0x8D, 0x15, 0x7A, 0x2A, 0x53, 0x00, 0x48, 0x8D, 0x4C, 0x24, 0x30, 0xFF, 0x15,
-                                          0x9F, 0x51, 0x42, 0x00, 0x48, 0x85, 0xC0, 0x48, 0x8D, 0x54, 0x24, 0x20, 0x48,
-                                          0x8D, 0x4C, 0x24, 0x30, 0x41, 0x0F, 0x95, 0xC0, 0xE8, 0xF1, 0x04, 0x00, 0x00,
-                                          0x80, 0x3D, 0xAB, 0xB8, 0xBC, 0x02, 0x00, 0x74, 0x1F]
-    dll_bytes[0x3347C5:0x3347C5 + 5] = [0x8B, 0x78, 0x0C, 0xEB, 0x22]
-    dll_bytes[0x370F4C:0x370F4C + 21] = [0xF3, 0x0F, 0x10, 0x05, 0xFC, 0x0D, 0x4D, 0x00, 0xE8, 0xB3, 0x68, 0xD7, 0xFF,
-                                         0xF6, 0xD8, 0x88, 0x83, 0xA0, 0x04, 0x00, 0x00]
-    dll_bytes[0x580908:0x580908 + 1] = [0x7F]
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\xe9\x96\x1f\xf9\xff\x8b\xcf\xe8\x9f\xff\xff"
+    replace_bytes = b"\x8b\x78\x0c\xeb\x22\x8b\xcf\xe8\x9f\xff\xff"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x83\xca\xff\x8b\xce\xe8\x02\x74\xfc\xff\x48\x8b\xf8\xe9\x9c\x57\xf5\xff\x90\x90\x90"
+    replace_bytes = b"\xf3\x0f\x10\x05\xfc\x0d\x4d\x00\xe8\xb3\x68\xd7\xff\xf6\xd8\x88\x83\xa0\x04\x00\x00"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 3rd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\xeb\x26\x33\xd2\x48\x8d\x4d\xdf\x44\x8d\x42\x34\xe8\x50\xcc\x07\x00\x8b"
+    replace_bytes = b"\x7f\x26\x33\xd2\x48\x8d\x4d\xdf\x44\x8d\x42\x34\xe8\x50\xcc\x07\x00\x8b"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace with original bytes
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 4th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
 
     # Write Changes to File
     with open(filepath, 'wb') as f:
         f.write(dll_bytes)
     global text_state
     text_state = "Removed"
-    bump_possession_var.set(0)
+    always_elite_var.set(0)
 
     # Display the print statement in a Tkinter window
     global label

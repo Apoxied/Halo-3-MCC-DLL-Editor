@@ -635,15 +635,33 @@ def check_offset():
             invul_in_multiplayer_button.deselect()
 
         # Check For Flashlight in Multiplayer
-        array_bytes_16 = b"\x90\x90\x90\x90\x99\x90\x8A"
+        array_bytes_16 = b"\x90\x90\x90\x90\x90\x90\x8A\x83\x88"
         array_index_16 = dll_bytes.find(array_bytes_16)
+        array_bytes_17 = b"\x90\x90\x90\x90\x90\x90\x90\x90\xF3\x0F\x10"
+        array_index_17 = dll_bytes.find(array_bytes_17)
 
-        array_bytes_35 = b"\x90\x90\x90\x90\x90\x90\x90\x90\xF3\x0F\x10"
-        array_index_35 = dll_bytes.find(array_bytes_35)
+        # Check For Flashlight in Multiplayer (default settings)
+        array_bytes_18 = b"\x0F\x85\x5A\x01\x00\x00\x8A\x83\x88"
+        array_index_18 = dll_bytes.find(array_bytes_18)
+        array_bytes_19 = b"\x0F\xBA\xB3\x70\x01\x00\x00\x1B\xF3\x0F\x10"
+        array_index_19 = dll_bytes.find(array_bytes_19)
 
-        if array_index_16 and array_index_35 != -1:
+        if array_index_16 and array_index_17 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_16).upper() + ", " +
+                               "{:X}".format(array_index_17).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=198, y=374)
             flashlight_var.set(1)
             flashlight_in_multiplayer_button.select()
+        elif array_index_18 and array_index_19 != -1:
+            offset_text = tk.Text(root, height=1, width=20, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_18).upper() + ", " +
+                               "{:X}".format(array_index_19).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=198, y=374)
         else:
             flashlight_var.set(0)
             flashlight_in_multiplayer_button.deselect()

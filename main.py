@@ -670,9 +670,24 @@ def check_offset():
         array_bytes_19 = b"\x90\x90\x44\x8D\x52\x03\x44\x89"
         array_index_19 = dll_bytes.find(array_bytes_19)
 
+        # Check For 3rd Person (default settings)
+        array_bytes_20 = b"\x74\x0E\x44\x8D\x52\x03\x44\x89"
+        array_index_20 = dll_bytes.find(array_bytes_20)
+
         if array_index_19 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_19).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=129, y=615)
             third_person_var.set(1)
             third_person_button.select()
+        elif array_index_20 != -1:
+            offset_text = tk.Text(root, height=1, width=12, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_20).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=129, y=615)
         else:
             third_person_var.set(0)
             third_person_button.deselect()
@@ -681,18 +696,44 @@ def check_offset():
         array_bytes_20 = b"\xC7\x03\x00\x00\x00\x00\xC7\x43\x04\x00\x00"
         count = 0
         start = 0
+        offsets = []
         while True:
             array_index_20 = dll_bytes.find(array_bytes_20, start)
             if array_index_20 == -1:
                 break
             count += 1
+            offsets.append(array_index_20 + 2)
             start = array_index_20 + len(array_bytes_20)
+
         if count == 3:
             zero_gravity_var.set(1)
             zero_gravity_button.select()
+            offset_text = tk.Text(root, height=1, width=40, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", ', '.join("{:X}".format(offset).upper() for offset in offsets))
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=125, y=644)
         else:
-            zero_gravity_var.set(0)
-            zero_gravity_button.deselect()
+            new_array_bytes = b"\xC7\x03\xF5\x7A\x85\x40\xC7\x43\x04\x00\x00"
+            new_count = 0
+            new_start = 0
+            new_offsets = []
+            while True:
+                new_array_index = dll_bytes.find(new_array_bytes, new_start)
+                if new_array_index == -1:
+                    break
+                new_count += 1
+                new_offsets.append(new_array_index + 2)
+                new_start = new_array_index + len(new_array_bytes)
+
+            if new_count == 3:
+                zero_gravity_var.set(0)
+                zero_gravity_button.deselect()
+                offset_text = tk.Text(root, height=1, width=40, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+                offset_text.insert("1.0", ', '.join("{:X}".format(offset).upper() for offset in new_offsets))
+                offset_text.configure(state="disabled")
+                offset_text.pack()
+                offset_text.place(x=125, y=644)
 
         # Check For Always Elite
         array_bytes_21 = b"\xEB\x42\x90\x90\x90\x90\x90\x90"

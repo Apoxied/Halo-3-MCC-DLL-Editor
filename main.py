@@ -1,4 +1,5 @@
 import tkinter as tk
+import webbrowser
 from tkinter import filedialog
 import tkinter.messagebox as messagebox
 import os
@@ -6,6 +7,7 @@ import win32api
 import psutil
 from tkinter import Label
 import requests
+import subprocess
 
 # Create the main window
 root = tk.Tk()
@@ -35,6 +37,12 @@ version_label = tk.Label(
 version_label.pack()
 version_label.place(x=495, y=10)
 
+def open_notes():
+    os.system("start https://mega.nz/folder/XU5XERZK#NjApzebKjF58HVrnVqflcA")
+
+notes_button = tk.Button(root, text="Notes", command=open_notes)
+notes_button.pack()
+notes_button.place(x=10, y=793)
 
 # Function to copy username to clipboard
 def copy_username(event):
@@ -238,11 +246,22 @@ def open_dll():
         filepath = new_filepath
 
         # Check if MCC process is running
-        process_name = "MCC-Win64-Shipping.exe"
-        processes = [p.info for p in psutil.process_iter(['pid', 'name']) if process_name in p.info['name']]
-        if processes:
-            messagebox.showerror("Error", "Please close MCC before attempting to make changes.")
-            return
+        process_names = ["MCC-Win64-Shipping.exe"]
+        process_running = False
+        for process in psutil.process_iter():
+            if process.name() in process_names:
+                process_running = True
+                break
+
+        if process_running:
+            answer = messagebox.askyesno("Close MCC", "Do you want to close MCC? YES or NO")
+            if answer == True:
+                for process in psutil.process_iter():
+                    if process.name() in process_names:
+                        process.kill()
+            else:
+                messagebox.showerror("Error", "Please close MCC before attempting to make changes.")
+                return
 
         # Load DLL file
         try:

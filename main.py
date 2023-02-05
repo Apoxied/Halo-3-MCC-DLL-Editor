@@ -1165,11 +1165,13 @@ tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    tooltip.lift(aboveThis=None)
     tooltip.place(x=bottomless_button.winfo_x() + bottomless_button.winfo_width(), y=bottomless_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     tooltip.pack_forget()
+    tooltip.lift(aboveThis=None)
     tooltip.place_forget()
 
 # button binds
@@ -1324,11 +1326,13 @@ all_grenades_at_once_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    all_grenades_at_once_tooltip.lift(aboveThis=None)
     all_grenades_at_once_tooltip.place(x=all_grenades_at_once_button.winfo_x() + all_grenades_at_once_button.winfo_width(), y=all_grenades_at_once_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     all_grenades_at_once_tooltip.pack_forget()
+    all_grenades_at_once_tooltip.lift(aboveThis=None)
     all_grenades_at_once_tooltip.place_forget()
 
 # button binds
@@ -1417,11 +1421,13 @@ bottomless_ammo_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    bottomless_ammo_tooltip.lift(aboveThis=None)
     bottomless_ammo_tooltip.place(x=bottomless_ammo_button.winfo_x() + bottomless_ammo_button.winfo_width(), y=bottomless_ammo_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     bottomless_ammo_tooltip.pack_forget()
+    bottomless_ammo_tooltip.lift(aboveThis=None)
     bottomless_ammo_tooltip.place_forget()
 
 # button binds
@@ -1570,11 +1576,13 @@ no_barriers_kill_triggers_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    no_barriers_kill_triggers_tooltip.lift(aboveThis=None)
     no_barriers_kill_triggers_tooltip.place(x=no_barriers_kill_triggers_button.winfo_x() + no_barriers_kill_triggers_button.winfo_width(), y=no_barriers_kill_triggers_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     no_barriers_kill_triggers_tooltip.pack_forget()
+    no_barriers_kill_triggers_tooltip.lift(aboveThis=None)
     no_barriers_kill_triggers_tooltip.place_forget()
 
 # button binds
@@ -1660,11 +1668,13 @@ thirty_tick_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    thirty_tick_tooltip.lift(aboveThis=None)
     thirty_tick_tooltip.place(x=thirty_tick_button.winfo_x() + thirty_tick_button.winfo_width(), y=thirty_tick_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     thirty_tick_tooltip.pack_forget()
+    thirty_tick_tooltip.lift(aboveThis=None)
     thirty_tick_tooltip.place_forget()
 
 # button binds
@@ -1751,11 +1761,13 @@ dual_wield_anything_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    dual_wield_anything_tooltip.lift(aboveThis=None)
     dual_wield_anything_tooltip.place(x=dual_wield_anything_button.winfo_x() + dual_wield_anything_button.winfo_width(), y=dual_wield_anything_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     dual_wield_anything_tooltip.pack_forget()
+    dual_wield_anything_tooltip.lift(aboveThis=None)
     dual_wield_anything_tooltip.place_forget()
 
 # button binds
@@ -1900,11 +1912,13 @@ custom_colors_multiplayer_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    custom_colors_multiplayer_tooltip.lift(aboveThis=None)
     custom_colors_multiplayer_tooltip.place(x=custom_colors_multiplayer_button.winfo_x() + custom_colors_multiplayer_button.winfo_width(), y=custom_colors_multiplayer_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     custom_colors_multiplayer_tooltip.pack_forget()
+    custom_colors_multiplayer_tooltip.lift(aboveThis=None)
     custom_colors_multiplayer_tooltip.place_forget()
 
 # button binds
@@ -1991,11 +2005,13 @@ no_weapon_overheat_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    no_weapon_overheat_tooltip.lift(aboveThis=None)
     no_weapon_overheat_tooltip.place(x=no_weapon_overheat_button.winfo_x() + no_weapon_overheat_button.winfo_width(), y=no_weapon_overheat_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     no_weapon_overheat_tooltip.pack_forget()
+    no_weapon_overheat_tooltip.lift(aboveThis=None)
     no_weapon_overheat_tooltip.place_forget()
 
 # button binds
@@ -2086,11 +2102,13 @@ no_checkpoint_crashes_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    no_checkpoint_crashes_tooltip.lift(aboveThis=None)
     no_checkpoint_crashes_tooltip.place(x=no_checkpoint_crashes_button.winfo_x() + no_checkpoint_crashes_button.winfo_width(), y=no_checkpoint_crashes_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     no_checkpoint_crashes_tooltip.pack_forget()
+    no_checkpoint_crashes_tooltip.lift(aboveThis=None)
     no_checkpoint_crashes_tooltip.place_forget()
 
 # button binds
@@ -2175,11 +2193,13 @@ no_motion_blur_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    no_motion_blur_tooltip.lift(aboveThis=None)
     no_motion_blur_tooltip.place(x=no_motion_blur_button.winfo_x() + no_motion_blur_button.winfo_width(), y=no_motion_blur_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     no_motion_blur_tooltip.pack_forget()
+    no_motion_blur_tooltip.lift(aboveThis=None)
     no_motion_blur_tooltip.place_forget()
 
 # button binds
@@ -2297,11 +2317,13 @@ flashlight_in_multiplayer_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    flashlight_in_multiplayer_tooltip.lift(aboveThis=None)
     flashlight_in_multiplayer_tooltip.place(x=flashlight_in_multiplayer_button.winfo_x() + flashlight_in_multiplayer_button.winfo_width(), y=flashlight_in_multiplayer_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     flashlight_in_multiplayer_tooltip.pack_forget()
+    flashlight_in_multiplayer_tooltip.lift(aboveThis=None)
     flashlight_in_multiplayer_tooltip.place_forget()
 
 # button binds
@@ -2386,11 +2408,13 @@ theater_sync_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    theater_sync_tooltip.lift(aboveThis=None)
     theater_sync_tooltip.place(x=theater_sync_button.winfo_x() + theater_sync_button.winfo_width(), y=theater_sync_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     theater_sync_tooltip.pack_forget()
+    theater_sync_tooltip.lift(aboveThis=None)
     theater_sync_tooltip.place_forget()
 
 # button binds
@@ -2459,11 +2483,13 @@ fix_forge_falling_speed_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    fix_forge_falling_speed_tooltip.lift(aboveThis=None)
     fix_forge_falling_speed_tooltip.place(x=fix_forge_falling_speed_button.winfo_x() + fix_forge_falling_speed_button.winfo_width(), y=fix_forge_falling_speed_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     fix_forge_falling_speed_tooltip.pack_forget()
+    fix_forge_falling_speed_tooltip.lift(aboveThis=None)
     fix_forge_falling_speed_tooltip.place_forget()
 
 # button binds
@@ -2578,11 +2604,13 @@ wall_clip_in_theater_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    wall_clip_in_theater_tooltip.lift(aboveThis=None)
     wall_clip_in_theater_tooltip.place(x=wall_clip_in_theater_button.winfo_x() + wall_clip_in_theater_button.winfo_width(), y=wall_clip_in_theater_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     wall_clip_in_theater_tooltip.pack_forget()
+    wall_clip_in_theater_tooltip.lift(aboveThis=None)
     wall_clip_in_theater_tooltip.place_forget()
 
 # button binds
@@ -2669,11 +2697,13 @@ bottomless_equipment_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    bottomless_equipment_tooltip.lift(aboveThis=None)
     bottomless_equipment_tooltip.place(x=bottomless_equipment_button.winfo_x() + bottomless_equipment_button.winfo_width(), y=bottomless_equipment_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     bottomless_equipment_tooltip.pack_forget()
+    bottomless_equipment_tooltip.lift(aboveThis=None)
     bottomless_equipment_tooltip.place_forget()
 
 # button binds
@@ -2769,11 +2799,13 @@ enlarge_all_crate_objects_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    enlarge_all_crate_objects_tooltip.lift(aboveThis=None)
     enlarge_all_crate_objects_tooltip.place(x=enlarge_all_crate_objects_button.winfo_x() + enlarge_all_crate_objects_button.winfo_width(), y=enlarge_all_crate_objects_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     enlarge_all_crate_objects_tooltip.pack_forget()
+    enlarge_all_crate_objects_tooltip.lift(aboveThis=None)
     enlarge_all_crate_objects_tooltip.place_forget()
 
 # button binds
@@ -2860,11 +2892,13 @@ ai_spawning_via_effects_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    ai_spawning_via_effects_tooltip.lift(aboveThis=None)
     ai_spawning_via_effects_tooltip.place(x=ai_spawning_via_effects_button.winfo_x() + ai_spawning_via_effects_button.winfo_width(), y=ai_spawning_via_effects_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     ai_spawning_via_effects_tooltip.pack_forget()
+    ai_spawning_via_effects_tooltip.lift(aboveThis=None)
     ai_spawning_via_effects_tooltip.place_forget()
 
 # button binds
@@ -2979,11 +3013,13 @@ laso_in_multiplayer_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    laso_in_multiplayer_tooltip.lift(aboveThis=None)
     laso_in_multiplayer_tooltip.place(x=laso_in_multiplayer_button.winfo_x() + laso_in_multiplayer_button.winfo_width(), y=laso_in_multiplayer_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     laso_in_multiplayer_tooltip.pack_forget()
+    laso_in_multiplayer_tooltip.lift(aboveThis=None)
     laso_in_multiplayer_tooltip.place_forget()
 
 # button binds
@@ -3068,11 +3104,13 @@ third_person_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    third_person_tooltip.lift(aboveThis=None)
     third_person_tooltip.place(x=third_person_button.winfo_x() + third_person_button.winfo_width(), y=third_person_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     third_person_tooltip.pack_forget()
+    third_person_tooltip.lift(aboveThis=None)
     third_person_tooltip.place_forget()
 
 # button binds
@@ -3169,11 +3207,13 @@ zero_gravity_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    zero_gravity_tooltip.lift(aboveThis=None)
     zero_gravity_tooltip.place(x=zero_gravity_button.winfo_x() + zero_gravity_button.winfo_width(), y=zero_gravity_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     zero_gravity_tooltip.pack_forget()
+    zero_gravity_tooltip.lift(aboveThis=None)
     zero_gravity_tooltip.place_forget()
 
 # button binds
@@ -3286,11 +3326,13 @@ always_elite_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    always_elite_tooltip.lift(aboveThis=None)
     always_elite_tooltip.place(x=always_elite_button.winfo_x() + always_elite_button.winfo_width(), y=always_elite_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     always_elite_tooltip.pack_forget()
+    always_elite_tooltip.lift(aboveThis=None)
     always_elite_tooltip.place_forget()
 
 # button binds
@@ -3468,11 +3510,13 @@ bump_possession_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    bump_possession_tooltip.lift(aboveThis=None)
     bump_possession_tooltip.place(x=bump_possession_button.winfo_x() + bump_possession_button.winfo_width(), y=bump_possession_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     bump_possession_tooltip.pack_forget()
+    bump_possession_tooltip.lift(aboveThis=None)
     bump_possession_tooltip.place_forget()
 
 # button binds
@@ -3587,11 +3631,13 @@ broad_stroke_physics_collision_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    broad_stroke_physics_collision_tooltip.lift(aboveThis=None)
     broad_stroke_physics_collision_tooltip.place(x=broad_stroke_physics_collision_button.winfo_x() + broad_stroke_physics_collision_button.winfo_width(), y=broad_stroke_physics_collision_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     broad_stroke_physics_collision_tooltip.pack_forget()
+    broad_stroke_physics_collision_tooltip.lift(aboveThis=None)
     broad_stroke_physics_collision_tooltip.place_forget()
 
 # button binds
@@ -3678,11 +3724,13 @@ invul_in_multiplayer_tooltip.pack_forget()
 
 # attach location of tooltip to the right of the text associated with the checkbox.
 def enter(event):
+    invul_in_multiplayer_tooltip.lift(aboveThis=None)
     invul_in_multiplayer_tooltip.place(x=invul_in_multiplayer_button.winfo_x() + invul_in_multiplayer_button.winfo_width(), y=invul_in_multiplayer_button.winfo_y(), anchor='nw')
 
 # hide tooltip when hovering away
 def leave(event):
     invul_in_multiplayer_tooltip.pack_forget()
+    invul_in_multiplayer_tooltip.lift(aboveThis=None)
     invul_in_multiplayer_tooltip.place_forget()
 
 # button binds

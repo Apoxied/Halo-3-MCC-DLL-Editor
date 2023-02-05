@@ -13,12 +13,14 @@ Easily edit your halo3.dll file with easy to use checkbox options.
 - I have it searching for the array of bytes, versus the offset, which has been able to successfully find pretty much all options on older seasons. It should be able to withstand future MCC updates without completely breaking. Most of the options, if not all, should stay intact.
 
 - It can detect if you have certain modifications already applied upon opening, which will automatically check the boxes.
+- Auto detects offset information.
 - You can deselect boxes to restore the original values.
 - "Clean DLL" button that deselects all options and restores your dll.
 - Detects which version of the game the dll belongs to and will disable the options not available for previous updates.
 - Detects if MCC is open, and will prevent you from opening the dll.
 - I have it handling the messages to the user at the top. Each message lasts 3 seconds long and disappears, letting the user know if the button worked or not. If there's an error, I have it displaying the error where the problematic array is located so I can fix things more easily.
 - Disallows the user from opening a file that's not named "halo3.dll" to prevent people from accidentally changing different dlls.
+- "Note" button included that taks you to a mega folder containing DLL offset information.
 
 ## How it Works
 H3 DLL Editor works by searching for the AOB (Array of Bytes) associated with the needed change. It recognizes patterns in your halo3.dll file and is able to make automatic changes upon checking a box. It's also able to reverse changes when unchecking a box. When initially opening a dll file inside the program, it will automatically scan for changes in the dll and check boxes on modifications already existent on your dll file.

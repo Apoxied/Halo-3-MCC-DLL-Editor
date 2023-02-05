@@ -6,7 +6,7 @@ Easily edit your halo3.dll file with easy to use checkbox options.
 - Select what features you desire to have
 - ✨Magic ✨
 
-![alt text](https://imgur.com/io3aWJg.png)
+![alt text](https://imgur.com/l1k9PA9.png)
 
 ## Features
 

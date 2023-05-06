@@ -1,5 +1,4 @@
 import tkinter as tk
-import webbrowser
 from tkinter import filedialog
 import tkinter.messagebox as messagebox
 import os
@@ -7,12 +6,11 @@ import win32api
 import psutil
 from tkinter import Label
 import requests
-import subprocess
 
 # Create the main window
 root = tk.Tk()
 root.title("H3 DLL Editor")
-root.geometry("600x825")
+root.geometry("700x925")
 root.configure(bg="grey94")
 root.resizable(False, False)
 
@@ -35,14 +33,14 @@ version_label = tk.Label(
     justify=tk.CENTER, wraplength=150
 )
 version_label.pack()
-version_label.place(x=495, y=10)
+version_label.place(x=595, y=10)
 
 def open_notes():
     os.system("start https://mega.nz/folder/XU5XERZK#NjApzebKjF58HVrnVqflcA")
 
 notes_button = tk.Button(root, text="Notes", command=open_notes)
 notes_button.pack()
-notes_button.place(x=10, y=793)
+notes_button.place(x=10, y=883)
 
 # Function to copy username to clipboard
 def copy_username(event):
@@ -55,7 +53,7 @@ def copy_username(event):
 # Create the username label
 label_username = tk.Label(root, text="Apoxied#1337", fg="blue", cursor="hand2")
 label_username.pack()
-label_username.place(x=486, y=30)
+label_username.place(x=586, y=30)
 label_username.bind("<Button-1>", copy_username)
 
 # Create the copy message label
@@ -81,7 +79,7 @@ save_and_exit_button = tk.Button(
     fg="white", bg="green"
 )
 save_and_exit_button.pack()
-save_and_exit_button.place(x=475, y=786)
+save_and_exit_button.place(x=575, y=883)
 
 
 # Clear DLL Function
@@ -140,12 +138,14 @@ def clear_dll():
             undo_bump_possession()
         if theater_sync_var.get() == 1:
             undo_theater_sync_fix()
+        if mp_colors_in_campaign_var.get() == 1:
+            undo_mp_colors_in_campaign()
 
 
 # Clear Button
 clear_button = tk.Button(root, text='Clean DLL', command=clear_dll, font=("arcadia", 12, "bold"), fg='white', bg='red', cursor="hand2")
 clear_button.pack()
-clear_button.place(x=375, y=786)
+clear_button.place(x=475, y=883)
 
 
 # Remove DLL Function
@@ -189,6 +189,7 @@ def remove_dll():
     bottomless_equipment_var.set(False)
     bump_possession_var.set(False)
     theater_sync_var.set(False)
+    mp_colors_in_campaign_var.set(False)
 
     # Set the open DLL status to True
     open_dll_active = True
@@ -205,7 +206,7 @@ def remove_dll():
                         flashlight_in_multiplayer_button, third_person_button, zero_gravity_button, always_elite_button,
                         enlarge_all_crate_objects_button, ai_spawning_via_effects_button, laso_in_multiplayer_button,
                         fix_forge_falling_speed_button, wall_clip_in_theater_button, bottomless_equipment_button,
-                        bump_possession_button, theater_sync_button]
+                        bump_possession_button, theater_sync_button, mp_colors_in_campaign_button]
     for checkbox_widget in checkbox_widgets:
         checkbox_widget.configure(state="disabled")
         version_label.config(text="")
@@ -288,9 +289,19 @@ def open_dll():
                                 laso_in_multiplayer_button,
                                 fix_forge_falling_speed_button, wall_clip_in_theater_button,
                                 bottomless_equipment_button,
-                                bump_possession_button, theater_sync_button]
+                                bump_possession_button, theater_sync_button, mp_colors_in_campaign_button]
             for checkbox_widget in checkbox_widgets:
                 checkbox_widget.configure(state="normal")
+
+            if mp_colors_in_campaign_var.get() == 1:
+                always_elite_button.config(state="disabled")
+            else:
+                always_elite_button.config(state="normal")
+
+            if always_elite_var.get() == 1:
+                mp_colors_in_campaign_button.config(state="disabled")
+            else:
+                mp_colors_in_campaign_button.config(state="normal")
 
             # Update open_dll_active flag and open button text/command
             open_dll_active = False
@@ -640,7 +651,7 @@ def check_offset():
             offset_text.insert("1.0", "{:X}".format(array_index_15).upper())
             offset_text.configure(state="disabled")
             offset_text.pack()
-            offset_text.place(x=227, y=765)
+            offset_text.place(x=227, y=794)
             invul_var.set(1)
             invul_in_multiplayer_button.select()
         elif array_index_16 != -1:
@@ -648,7 +659,7 @@ def check_offset():
             offset_text.insert("1.0", "{:X}".format(array_index_16).upper())
             offset_text.configure(state="disabled")
             offset_text.pack()
-            offset_text.place(x=227, y=764)
+            offset_text.place(x=227, y=794)
         else:
             invul_var.set(0)
             invul_in_multiplayer_button.deselect()
@@ -1089,6 +1100,64 @@ def check_offset():
         else:
             theater_sync_var.set(0)
             theater_sync_button.deselect()
+
+        # Check for Multiplayer Colors in Campaign
+        array_bytes_60 = b"\x80\x78\x10\x02\x90\x90\xE8\x9C"
+        array_index_60 = dll_bytes.find(array_bytes_60)
+        array_bytes_61 = b"\x38\x54\x24\x70\x90\x90\x41\xB1"
+        array_index_61 = dll_bytes.find(array_bytes_61)
+        array_bytes_62 = b"\x38\x48\x10\xEB\x1B\x41\x0F"
+        array_index_62 = dll_bytes.find(array_bytes_62)
+        array_bytes_63 = b"\x10\x41\x80\xFD\x02\x90\x90"
+        array_index_63 = dll_bytes.find(array_bytes_63)
+        array_bytes_64 = b"\x90\x90\x0F\x10\x44\x24\x60\x83"
+        array_index_64 = dll_bytes.find(array_bytes_64)
+        array_bytes_65 = b"\x41\x80\xFD\x01\x90\x90\x48\x8D\x55"
+        array_index_65 = dll_bytes.find(array_bytes_65)
+
+        # Check for Multiplayer Colors in Campaign (Default Settings)
+        array_bytes_66 = b"\x80\x78\x10\x02\x75\x18\xE8\x9C"
+        array_index_66 = dll_bytes.find(array_bytes_66)
+        array_bytes_67 = b"\x38\x54\x24\x70\x74\x37\x41\xB1"
+        array_index_67 = dll_bytes.find(array_bytes_67)
+        array_bytes_68 = b"\x38\x48\x10\x75\x1B\x41\x0F"
+        array_index_68 = dll_bytes.find(array_bytes_68)
+        array_bytes_69 = b"\x10\x41\x80\xFD\x02\x75\x11"
+        array_index_69 = dll_bytes.find(array_bytes_69)
+        array_bytes_70 = b"\x74\x2B\x0F\x10\x44\x24\x60\x83"
+        array_index_70 = dll_bytes.find(array_bytes_70)
+        array_bytes_71 = b"\x41\x80\xFD\x01\x74\x0C\x48\x8D\x55"
+        array_index_71 = dll_bytes.find(array_bytes_71)
+
+        if array_index_60 and array_index_61 and array_index_62 and array_index_63 and array_index_64 and array_index_65 != -1:
+            offset_text = tk.Text(root, height=1, width=45, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_60 + 4).upper() + ", " +
+                               "{:X}".format(array_index_61 + 4).upper() + ", " +
+                               "{:X}".format(array_index_62 + 3).upper() + ", " +
+                               "{:X}".format(array_index_63 + 5).upper() + ", " +
+                               "{:X}".format(array_index_64).upper() + ", " +
+                               "{:X}".format(array_index_65 + 4).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=240, y=764)
+            mp_colors_in_campaign_var.set(1)
+            mp_colors_in_campaign_button.select()
+            always_elite_button.config(state="disabled")
+        elif array_index_66 and array_index_67 and array_index_68 and array_index_69 and array_index_70 and array_index_71 != -1:
+            offset_text = tk.Text(root, height=1, width=45, font=("Arial", 10, "bold"), fg="black", cursor="hand2")
+            offset_text.insert("1.0", "{:X}".format(array_index_66 + 4).upper() + ", " +
+                               "{:X}".format(array_index_67 + 4).upper() + ", " +
+                               "{:X}".format(array_index_68 + 3).upper() + ", " +
+                               "{:X}".format(array_index_69 + 5).upper() + ", " +
+                               "{:X}".format(array_index_70).upper() + ", " +
+                               "{:X}".format(array_index_71 + 4).upper())
+            offset_text.configure(state="disabled")
+            offset_text.pack()
+            offset_text.place(x=240, y=764)
+        else:
+            mp_colors_in_campaign_var.set(0)
+            mp_colors_in_campaign_button.deselect()
+            always_elite_button.config(state="disabled")
 
     except:
         print("An error occured while reading the DLL file.")
@@ -3280,6 +3349,7 @@ def always_an_elite():
     # Display the print statement in a Tkinter window
     global label
     label = tk.Label(root, text="Always An Elite Activated.")
+    mp_colors_in_campaign_button.config(state="disabled")
     label.pack()
     root.after(3000, label.destroy)
 
@@ -3327,6 +3397,7 @@ def undo_always_an_elite():
     # Display the print statement in a Tkinter window
     global label
     label = tk.Label(root, text="Always An Elite Deactivated.")
+    mp_colors_in_campaign_button.config(state="normal")
     label.pack()
     root.after(3000, label.destroy)
 
@@ -3734,7 +3805,7 @@ invul_in_multiplayer_button = tk.Checkbutton(root, text='Invulnerability in Mult
                                                  invulnerability_in_multiplayer() if invul_var.get() else undo_invulnerability_in_multiplayer()),
                                              font=("arcadia", 10, "bold"))
 invul_in_multiplayer_button.pack()
-invul_in_multiplayer_button.place(x=10, y=760)
+invul_in_multiplayer_button.place(x=10, y=790)
 
 # invulnerability in multiplayer info tooltip
 invul_in_multiplayer_tooltip_text = "Invulnerability in multiplayer (exlcuding single player)."
@@ -3758,6 +3829,247 @@ invul_in_multiplayer_button.bind("<Leave>", leave)
 
 
 
+# Multiplayer Colors in Campaign
+def mp_colors_in_campaign():
+    global dll_bytes
+    search_bytes = b"\x80\x78\x10\x02\x75\x18\xE8\x9C"
+    replace_bytes = b"\x80\x78\x10\x02\x90\x90\xE8\x9C"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x38\x54\x24\x70\x74\x37\x41\xB1"
+    replace_bytes = b"\x38\x54\x24\x70\x90\x90\x41\xB1"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x38\x48\x10\x75\x1B\x41\x0F"
+    replace_bytes = b"\x38\x48\x10\xEB\x1B\x41\x0F"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 3rd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x10\x41\x80\xFD\x02\x75\x11"
+    replace_bytes = b"\x10\x41\x80\xFD\x02\x90\x90"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 4th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x74\x2B\x0F\x10\x44\x24\x60\x83"
+    replace_bytes = b"\x90\x90\x0F\x10\x44\x24\x60\x83"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 5th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x41\x80\xFD\x01\x74\x0C\x48\x8D\x55"
+    replace_bytes = b"\x41\x80\xFD\x01\x90\x90\x48\x8D\x55"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 6th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Multiplayer Colors in Campaign Activated.")
+    always_elite_button.config(state="disabled")
+    label.pack()
+    root.after(3000, label.destroy)
+
+
+# undo invulnerability in multiplayer function
+def undo_mp_colors_in_campaign():
+    global dll_bytes
+    search_bytes = b"\x80\x78\x10\x02\x90\x90\xE8\x9C"
+    replace_bytes = b"\x80\x78\x10\x02\x75\x18\xE8\x9C"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 1st offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x38\x54\x24\x70\x90\x90\x41\xB1"
+    replace_bytes = b"\x38\x54\x24\x70\x74\x37\x41\xB1"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 2nd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x38\x48\x10\xEB\x1B\x41\x0F"
+    replace_bytes = b"\x38\x48\x10\x75\x1B\x41\x0F"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 3rd offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x10\x41\x80\xFD\x02\x90\x90"
+    replace_bytes = b"\x10\x41\x80\xFD\x02\x75\x11"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 4th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x90\x90\x0F\x10\x44\x24\x60\x83"
+    replace_bytes = b"\x74\x2B\x0F\x10\x44\x24\x60\x83"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 5th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    search_bytes = b"\x41\x80\xFD\x01\x90\x90\x48\x8D\x55"
+    replace_bytes = b"\x41\x80\xFD\x01\x74\x0C\x48\x8D\x55"
+
+    # Find the index of original bytes
+    index = dll_bytes.find(search_bytes)
+    if index != -1:
+
+        # Replace original bytes with replacement
+        dll_bytes[index:index + len(search_bytes)] = replace_bytes
+    else:
+        # Show error message if search bytes are not found
+        error_label = tk.Label(root, text="Bytes not found at 6th offset. Contact Apoxied#1337 via Discord.")
+        error_label.pack()
+        root.after(3000, error_label.destroy)
+
+    # Write Changes to File
+    with open(filepath, 'wb') as f:
+        f.write(dll_bytes)
+
+    # Display the print statement in a Tkinter window
+    global label
+    label = tk.Label(root, text="Multiplayer Colors in Campaign Deactivated.")
+    always_elite_button.config(state="normal")
+    label.pack()
+    root.after(3000, label.destroy)
+
+
+# Multiplayer Colors in Campaign Checkbox
+mp_colors_in_campaign_var = tk.IntVar()
+mp_colors_in_campaign_button = tk.Checkbutton(root, text='Multiplayer Colors in Campaign', variable=mp_colors_in_campaign_var,
+                                             command=lambda: (
+                                                 mp_colors_in_campaign() if mp_colors_in_campaign_var.get() else undo_mp_colors_in_campaign()),
+                                             font=("arcadia", 10, "bold"))
+mp_colors_in_campaign_button.pack()
+mp_colors_in_campaign_button.place(x=10, y=760)
+
+# invulnerability in multiplayer info tooltip
+mp_colors_in_campaign_tooltip_text = "Multiplayer Colors in Campaign (Tag Modifications also required)."
+mp_colors_in_campaign_tooltip = Label(root, text=mp_colors_in_campaign_tooltip_text, font="Verdana 8", bg="gold", relief="solid")
+mp_colors_in_campaign_tooltip.pack_forget()
+
+# attach location of tooltip to the right of the text associated with the checkbox.
+def enter(event):
+    mp_colors_in_campaign_tooltip.lift(aboveThis=None)
+    mp_colors_in_campaign_tooltip.place(x=mp_colors_in_campaign_button.winfo_x() + mp_colors_in_campaign_button.winfo_width(), y=mp_colors_in_campaign_button.winfo_y(), anchor='nw')
+
+# hide tooltip when hovering away
+def leave(event):
+    mp_colors_in_campaign_tooltip.pack_forget()
+    mp_colors_in_campaign_tooltip.lift(aboveThis=None)
+    mp_colors_in_campaign_tooltip.place_forget()
+
+# button binds
+mp_colors_in_campaign_button.bind("<Enter>", enter)
+mp_colors_in_campaign_button.bind("<Leave>", leave)
+
+
+
 checkbox_widgets = [broad_stroke_physics_collision_button, no_motion_blur_button, bottomless_button,
                     all_grenades_at_once_button, bottomless_ammo_button, no_barriers_kill_triggers_button,
                     thirty_tick_button, dual_wield_anything_button, custom_colors_multiplayer_button,
@@ -3765,7 +4077,7 @@ checkbox_widgets = [broad_stroke_physics_collision_button, no_motion_blur_button
                     flashlight_in_multiplayer_button, third_person_button, zero_gravity_button, always_elite_button,
                     enlarge_all_crate_objects_button, ai_spawning_via_effects_button, laso_in_multiplayer_button,
                     fix_forge_falling_speed_button, wall_clip_in_theater_button, bottomless_equipment_button,
-                    bump_possession_button, theater_sync_button]
+                    bump_possession_button, theater_sync_button, mp_colors_in_campaign_button]
 for checkbox_widget in checkbox_widgets:
     checkbox_widget.configure(state="disabled")
 
